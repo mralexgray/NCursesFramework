@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		2C0605C619571A95000B7552 /* TextEditorView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C0605C519571A95000B7552 /* TextEditorView.m */; };
+		2C517164196B383100726A5F /* NCLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C517163196B383100726A5F /* NCLabel.m */; };
 		2C54CC32194B46CA00D11D59 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C54CC31194B46CA00D11D59 /* Foundation.framework */; };
 		2C54CC35194B46CA00D11D59 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C54CC34194B46CA00D11D59 /* main.m */; };
 		2C54CC39194B46CA00D11D59 /* NCursesLibrary.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = 2C54CC38194B46CA00D11D59 /* NCursesLibrary.1 */; };
@@ -48,6 +49,8 @@
 /* Begin PBXFileReference section */
 		2C0605C419571A95000B7552 /* TextEditorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextEditorView.h; sourceTree = "<group>"; };
 		2C0605C519571A95000B7552 /* TextEditorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TextEditorView.m; sourceTree = "<group>"; };
+		2C517162196B383100726A5F /* NCLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCLabel.h; sourceTree = "<group>"; };
+		2C517163196B383100726A5F /* NCLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCLabel.m; sourceTree = "<group>"; };
 		2C54CC2E194B46CA00D11D59 /* NCursesLibrary */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = NCursesLibrary; sourceTree = BUILT_PRODUCTS_DIR; };
 		2C54CC31194B46CA00D11D59 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		2C54CC34194B46CA00D11D59 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -228,6 +231,8 @@
 			children = (
 				2C7481D4195154F0001C40CC /* NCView.h */,
 				2C7481D5195154F0001C40CC /* NCView.m */,
+				2C517162196B383100726A5F /* NCLabel.h */,
+				2C517163196B383100726A5F /* NCLabel.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -385,6 +390,7 @@
 				2C7481F6195154F0001C40CC /* NCScreen.m in Sources */,
 				2C7481F7195154F0001C40CC /* Logger.m in Sources */,
 				2C7481EC195154F0001C40CC /* NCApplication.m in Sources */,
+				2C517164196B383100726A5F /* NCLabel.m in Sources */,
 				2CA432981959B08D00930CC5 /* FileBuffer.m in Sources */,
 				2C7481F2195154F0001C40CC /* NCColor.m in Sources */,
 				2C7481E9195154F0001C40CC /* TestApplication.m in Sources */,

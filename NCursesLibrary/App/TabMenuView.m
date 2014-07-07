@@ -66,6 +66,11 @@
 {
     if(self.currentIndex > 0) {
         self.currentIndex--;
+        
+        TabMenuItem *item = [self.items objectAtIndex:self.currentIndex];
+        if(self.output && [self.output respondsToSelector:@selector(didSelectItem:)]) {
+            [self.output didSelectItem:item];
+        }
     }
 }
 
@@ -73,19 +78,42 @@
 {
     if(self.currentIndex + 1 < self.items.count) {
         self.currentIndex++;
+        
+        TabMenuItem *item = [self.items objectAtIndex:self.currentIndex];
+        if(self.output && [self.output respondsToSelector:@selector(didSelectItem:)]) {
+            [self.output didSelectItem:item];
+        }
     }
 }
 
 - (void)drawRect:(CGRect)rect
        inContext:(NCRenderContext *)context
 {
-    if(!self.hidden)
-    {
-        
-    }
-    
     [super drawRect:rect
           inContext:context];
+    
+    if(!self.hidden)
+    {
+        int rx = 0;
+        int tempOffsetX = self.offsetX;
+        for(int i = 0; i < self.items.count && rx < self.frame.size.width; i++) {
+            TabMenuItem *item = [self.items objectAtIndex:i];
+            int lenToDraw = ((int)item.name.length)+2 - tempOffsetX;
+            tempOffsetX -= (item.name.length+2);
+            tempOffsetX = MAX(tempOffsetX, 0);
+            
+            if(lenToDraw > 0) {
+                [context drawText:[[NSString stringWithFormat:@"[%@]",item.name] substringFromIndex:((int)item.name.length+2) - lenToDraw]
+                           inRect:CGRectMake(self.frame.origin.x + rx, self.frame.origin.y, lenToDraw, 1)
+                   withForeground:i == self.currentIndex ? self.passiveColor : self.activeColor
+                   withBackground:i == self.currentIndex ? self.activeColor : self.passiveColor
+                        breakMode:NCLineBreakByNoWrapping
+                     truncateMode:NCLineTruncationByClipping
+                    alignmentMode:NCLineAlignmentLeft];
+                rx += lenToDraw;
+            }
+        }
+    }
 }
 
 @end

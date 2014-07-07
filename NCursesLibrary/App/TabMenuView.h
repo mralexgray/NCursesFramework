@@ -19,6 +19,9 @@
 
 @interface TabMenuView : NCView
 
+@property (nonatomic, strong) NCColor *passiveColor;
+@property (nonatomic, strong) NCColor *activeColor;
+
 - (void) addMenuItem:(NSString*)name
                  tag:(NSObject*)tag;
 - (void) removeCurrentItem;

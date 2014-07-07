@@ -66,12 +66,12 @@
 
 - (void)moveDown
 {
-    if(self.buffer.cursorOffsetY + 1 < self.frame.size.height)
+    if(self.buffer.cursorOffsetY + 1 < MIN(self.frame.size.height, (int)self.buffer.lines.count-1))
     {
         self.buffer.cursorOffsetY++;
         self.buffer.cursorLineY++;
     }
-    else if(self.buffer.cursorLineY + 1 < self.buffer.lines.count)
+    else if(self.buffer.cursorLineY + 1 < (int)self.buffer.lines.count-1)
     {
         self.buffer.cursorLineY++;
         self.buffer.screenOffsetY++;
@@ -174,7 +174,7 @@
                                 cx -= size.width;
                                 cy++;
                             }
-                            [context drawPoint:CGSizeMake(cx, y + cy)
+                            [context drawPoint:CGSizeMake(self.frame.origin.x + cx, self.frame.origin.y + y + cy)
                                 withForeground:[NCColor blackColor]
                                 withBackground:[NCColor whiteColor]];
                         }

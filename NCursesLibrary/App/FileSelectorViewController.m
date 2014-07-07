@@ -21,7 +21,11 @@
 {
     self = [super init];
     if(self) {
-        self.path = path;
+        if(path && path.length > 0 && ![[path substringFromIndex:path.length-1] isEqualToString:@"/"]) {
+            self.path = [NSString stringWithFormat:@"%@/",path];
+        } else {
+            self.path = path;
+        }
     }
     return self;
 }

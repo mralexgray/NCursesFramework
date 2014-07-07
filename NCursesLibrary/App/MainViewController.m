@@ -10,12 +10,14 @@
 
 #import "NCNavigationController.h"
 #import "NCAlertView.h"
+#import "NCLabel.h"
 
 @interface MainViewController ()
 @property (nonatomic, assign) BOOL commandMode;
 
 @property (nonatomic, strong) TextEditorView *textEditorView;
 @property (nonatomic, strong) TabMenuView *tabMenuView;
+@property (nonatomic, strong) NCLabel *modeLabel;
 @end
 
 @implementation MainViewController
@@ -25,11 +27,20 @@
     [super viewDidLoad];
     self.tabMenuView = [[TabMenuView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 1)];
     [self.tabMenuView setOutput:self];
+    [self.tabMenuView setBackgroundColor:[NCColor whiteColor]];
+    [self.tabMenuView setActiveColor:[NCColor blackColor]];
+    [self.tabMenuView setPassiveColor:[NCColor whiteColor]];
     [self.view addSubview:self.tabMenuView];
     
-    self.textEditorView = [[TextEditorView alloc] initWithFrame:CGRectMake(0, 1, self.view.frame.size.width, self.view.frame.size.height-1)];
+    self.textEditorView = [[TextEditorView alloc] initWithFrame:CGRectMake(0, 1, self.view.frame.size.width, self.view.frame.size.height-2)];
     self.textEditorView.output = self;
     [self.view addSubview:self.textEditorView];
+    
+    self.modeLabel = [[NCLabel alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height - 1, self.view.frame.size.width, 1)];
+    [self.modeLabel setText:self.commandMode ? @"COMMAND MODE" : @"INPUT MODE"];
+    [self.modeLabel setForegroundColor:[NCColor blackColor]];
+    [self.modeLabel setBackgroundColor:[NCColor whiteColor]];
+    [self.view addSubview:self.modeLabel];
 }
 
 - (void)keyPress:(NCKey *)key
@@ -38,10 +49,16 @@
         self.commandMode = !self.commandMode;
     } else {
         if(self.commandMode) {
-            if([key isEqualTo:[NCKey NCKEY_ENTER]]) {
-                FileSelectorViewController *vc = [[FileSelectorViewController alloc] initWithPath:@"/"];
+            if([key isEqualTo:[NCKey NCKEY_l]] || [key isEqualTo:[NCKey NCKEY_L]]) {
+                FileSelectorViewController *vc = [[FileSelectorViewController alloc] initWithPath:[[NSBundle mainBundle] bundlePath]];
                 vc.output = self;
                 [self.navigationController pushViewController:vc];
+            }
+            else if([key isEqualTo:[NCKey NCKEY_ARROW_LEFT]]) {
+                [self.tabMenuView moveLeft];
+            }
+            else if([key isEqualTo:[NCKey NCKEY_ARROW_RIGHT]]) {
+                [self.tabMenuView moveRight];
             }
             self.commandMode = NO;
         } else {
@@ -62,6 +79,9 @@
             }
         }
     }
+    
+    // Update modeLabel
+    [self.modeLabel setText:self.commandMode ? @"COMMAND MODE" : @"INPUT MODE"];
 }
 
 #pragma mark TabMenuViewOutput
