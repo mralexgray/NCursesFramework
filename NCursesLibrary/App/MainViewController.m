@@ -49,7 +49,7 @@
         self.commandMode = !self.commandMode;
     } else {
         if(self.commandMode) {
-            if([key isEqualTo:[NCKey NCKEY_l]] || [key isEqualTo:[NCKey NCKEY_L]]) {
+            if([key isEqualTo:[NCKey NCKEY_r]] || [key isEqualTo:[NCKey NCKEY_R]]) {
                 FileSelectorViewController *vc = [[FileSelectorViewController alloc] initWithPath:[[NSBundle mainBundle] bundlePath]];
                 vc.output = self;
                 [self.navigationController pushViewController:vc];

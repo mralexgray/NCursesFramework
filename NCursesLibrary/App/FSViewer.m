@@ -38,7 +38,7 @@
                withForeground:[NCColor whiteColor]
                withBackground:[NCColor blackColor]
                     breakMode:NCLineBreakByNoWrapping
-                 truncateMode:NCLineTruncationByTruncationTail
+                 truncateMode:NCLineTruncationByTruncatingHead
                 alignmentMode:NCLineAlignmentCenter];
         }
         

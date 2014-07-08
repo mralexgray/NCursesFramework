@@ -121,7 +121,7 @@
         }
         else if(mode == NCLineTruncationByTruncatingHead)
         {
-            text = [NSString stringWithFormat:@"...%@",[text substringFromIndex:3]];
+            text = [NSString stringWithFormat:@"...%@",[text substringFromIndex:text.length - rect.size.width + 3]];
             text = [text substringToIndex:rect.size.width];
         }
         else if(mode == NCLineTruncationByTruncationTail)
