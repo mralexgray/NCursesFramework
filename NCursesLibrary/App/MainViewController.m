@@ -50,8 +50,21 @@
     } else {
         if(self.commandMode) {
             if([key isEqualTo:[NCKey NCKEY_r]] || [key isEqualTo:[NCKey NCKEY_R]]) {
-                FileSelectorViewController *vc = [[FileSelectorViewController alloc] initWithPath:[[NSBundle mainBundle] bundlePath]];
+                FileSelectorViewController *vc = [[FileSelectorViewController alloc] initWithPath:[[NSBundle mainBundle] bundlePath]
+                                                                                          withTag:0];
                 vc.output = self;
+                [self.navigationController pushViewController:vc];
+            }
+            else if([key isEqualTo:[NCKey NCKEY_n]] || [key isEqualTo:[NCKey NCKEY_N]]) {
+                FileBuffer *nBuffer = [[FileBuffer alloc] init];
+                nBuffer.lines = [NSMutableArray arrayWithObject:[NSMutableString string]];
+                [self.tabMenuView addMenuItem:@"New buffer" tag:nBuffer];
+            }
+            else if([key isEqualTo:[NCKey NCKEY_w]] || [key isEqualTo:[NCKey NCKEY_W]]) {
+                FileSelectorViewController *vc = [[FileSelectorViewController alloc] initWithPath:[[NSBundle mainBundle] bundlePath]
+                                                                                          withTag:1];
+                vc.output = self;
+                vc.allowNewFile = YES;
                 [self.navigationController pushViewController:vc];
             }
             else if([key isEqualTo:[NCKey NCKEY_ARROW_LEFT]]) {
@@ -106,12 +119,25 @@
 #pragma mark FileSelectorViewControllerDelegate
 
 - (void) didSelectFile:(NSString*)file
+               withTag:(int)tag
 {
-    FileBuffer *buffer = [FileBuffer fileBufferFromFilePath:file];
-    if(buffer) {
-        [self.tabMenuView addMenuItem:[file lastPathComponent] tag:buffer];
-    } else {
-        [self failedToOpenFile:file];
+    BOOL openBuffer = tag == 0;
+    BOOL saveBuffer = tag == 1;
+    
+    if(openBuffer) {
+        FileBuffer *buffer = [FileBuffer fileBufferFromFilePath:file];
+        if(buffer) {
+            [self.tabMenuView addMenuItem:[file lastPathComponent] tag:buffer];
+        } else {
+            [self failedToOpenFile:file];
+        }
+    } else if(saveBuffer) {
+        FileBuffer *buffer = self.textEditorView.buffer;
+        if(buffer) {
+            buffer.path = file;
+            [self.tabMenuView setCurrentTabName:[file lastPathComponent]];
+            [[buffer.lines componentsJoinedByString:@"\n"] writeToFile:file atomically:YES encoding:NSUTF8StringEncoding error:nil];
+        }
     }
 }
 

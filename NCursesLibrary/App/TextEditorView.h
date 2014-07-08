@@ -28,5 +28,6 @@
 - (void) openBuffer:(FileBuffer*)buffer;
 
 @property (nonatomic, strong) id<TextEditorViewOutput> output;
+@property (nonatomic, strong) FileBuffer *buffer;
 
 @end

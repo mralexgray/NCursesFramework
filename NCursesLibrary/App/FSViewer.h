@@ -32,13 +32,16 @@
 @interface FSViewer : NCView
 - (void) moveDown;
 - (void) moveUp;
-
 - (void) moveOut;
 - (void) moveIn;
 
 - (void) filterAddCharacter:(char)character;
 - (void) filterRemovePreviousCharacter;
 - (void) filterClear;
+
+- (void) fileNewAddCharacter:(char)character;
+- (void) fileNewRemovePreviousCharacter;
+- (void) fileNewClear;
 
 - (void) openPath:(NSString*)path;
 

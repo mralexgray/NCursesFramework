@@ -30,6 +30,9 @@
 - (void) moveLeft;
 - (void) moveRight;
 
+- (void) setCurrentTabName:(NSString*)name;
+- (void) setCurrentTabTag:(NSObject*)tag;
+
 @property (nonatomic, weak) id<TabMenuViewOutput> output;
 
 @end

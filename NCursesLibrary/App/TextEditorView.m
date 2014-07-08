@@ -8,10 +8,6 @@
 
 #import "TextEditorView.h"
 
-@interface TextEditorView ()
-@property (nonatomic, strong) FileBuffer *buffer;
-@end
-
 @implementation TextEditorView
 
 - (void)moveLeft

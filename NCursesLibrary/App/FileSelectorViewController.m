@@ -13,14 +13,17 @@
 @interface FileSelectorViewController ()
 @property (nonatomic, strong) FSViewer *fileViewer;
 @property (nonatomic, strong) NSString *path;
+@property (nonatomic, assign) int tag;
 @end
 
 @implementation FileSelectorViewController
 
 - (id) initWithPath:(NSString *)path
+            withTag:(int)tag
 {
     self = [super init];
     if(self) {
+        self.tag = tag;
         if(path && path.length > 0 && ![[path substringFromIndex:path.length-1] isEqualToString:@"/"]) {
             self.path = [NSString stringWithFormat:@"%@/",path];
         } else {
@@ -51,9 +54,17 @@
     } else if([key isEqualTo:[NCKey NCKEY_ENTER]]) {
         [self.fileViewer moveIn];
     } else if([key isEqualTo:[NCKey NCKEY_BACK_SPACE]]) {
-        [self.fileViewer filterRemovePreviousCharacter];
+        if(self.allowNewFile) {
+            [self.fileViewer fileNewRemovePreviousCharacter];
+        } else {
+            [self.fileViewer filterRemovePreviousCharacter];
+        }
     } else {
-        [self.fileViewer filterAddCharacter:[key getCharacter]];
+        if(self.allowNewFile) {
+            [self.fileViewer fileNewAddCharacter:[key getCharacter]];
+        } else {
+            [self.fileViewer filterAddCharacter:[key getCharacter]];
+        }
     }
 }
 
@@ -62,8 +73,9 @@
     NCAlertView *alert = [[NCAlertView alloc] initWithTitle:@"Open file"
                                                  andMessage:[NSString stringWithFormat:@"Do you want to open '%@'?",filePath]];
     [alert addButton:@"OK" withBlock:^{
-        if(self.output && [self.output respondsToSelector:@selector(didSelectFile:)]) {
-            [self.output didSelectFile:filePath];
+        if(self.output && [self.output respondsToSelector:@selector(didSelectFile:withTag:)]) {
+            [self.output didSelectFile:filePath
+                               withTag:self.tag];
         }
         [self.navigationController popViewController];
     }];

@@ -12,6 +12,8 @@
 @property (nonatomic, strong) NSString *path;
 @property (nonatomic, strong) Folder *parentFolder;
 
+@property (nonatomic, strong) NSString *fileNewName;
+
 @property (nonatomic, strong) NSString *filter;
 @property (nonatomic, strong) NSArray *filteredFiles;
 @property (nonatomic, strong) NSArray *filteredFolders;
@@ -45,6 +47,21 @@
         // Draw filter
         if(self.filter && self.filter.length > 0) {
             NSString *text = [NSString stringWithFormat:@"filter: '%@'",self.filter];
+            CGSize textSize = [context sizeOfText:text
+                                        breakMode:NCLineBreakByNoWrapping
+                                            width:rect.size.width];
+            [context drawText:text
+                       inRect:CGRectMake(rect.origin.x, rect.origin.y, textSize.width, 1)
+               withForeground:[NCColor blackColor]
+               withBackground:[NCColor whiteColor]
+                    breakMode:NCLineBreakByNoWrapping
+                 truncateMode:NCLineTruncationByTruncationTail
+                alignmentMode:NCLineAlignmentLeft];
+        }
+        
+        // Draw new file name
+        if(self.fileNewName && self.fileNewName.length > 0) {
+            NSString *text = [NSString stringWithFormat:@"new file: '%@'",self.fileNewName];
             CGSize textSize = [context sizeOfText:text
                                         breakMode:NCLineBreakByNoWrapping
                                             width:rect.size.width];
@@ -142,16 +159,18 @@
     
     for(int i = 0; i < contents.count; i++) {
         NSString *f = [path stringByAppendingString:[contents objectAtIndex:i]];
-        BOOL isDir = [f pathExtension].length == 0;
-        if(isDir) {
-            Folder * folder = [[Folder alloc] initWithPath:f];
-            if(!folder.isHidden) {
-                [folders addObject:folder];
-            }
-        } else {
-            File *file = [[File alloc] initWithPath:f];
-            if(!file.isHidden) {
-                [files addObject:file];
+        BOOL isDir = YES;
+        if([[NSFileManager defaultManager] fileExistsAtPath:f isDirectory:&isDir]) {
+            if(isDir) {
+                Folder * folder = [[Folder alloc] initWithPath:f];
+                if(!folder.isHidden) {
+                    [folders addObject:folder];
+                }
+            } else {
+                File *file = [[File alloc] initWithPath:f];
+                if(!file.isHidden) {
+                    [files addObject:file];
+                }
             }
         }
     }
@@ -197,6 +216,13 @@
 
 - (void) moveIn
 {
+    if(self.fileNewName && self.fileNewName.length > 0) {
+        if(self.delegate && [self.delegate respondsToSelector:@selector(didSelectFile:)]) {
+            [self.delegate didSelectFile:[self.path stringByAppendingString:self.fileNewName]];
+        }
+        return;
+    }
+    
     NSArray *folders = self.filteredFolders ? self.filteredFolders : self.folders;
     NSArray *files = self.filteredFiles ? self.filteredFiles : self.files;
     
@@ -262,6 +288,31 @@
     self.filter = nil;
     self.filteredFiles = nil;
     self.filteredFolders = nil;
+}
+
+- (void) fileNewAddCharacter:(char)character
+{
+    if(!self.fileNewName) {
+        self.fileNewName = [NSString stringWithFormat:@"%c",character];
+    } else {
+        self.fileNewName = [self.fileNewName stringByAppendingFormat:@"%c",character];
+    }
+}
+
+- (void) fileNewRemovePreviousCharacter
+{
+    if(self.fileNewName) {
+        if(self.fileNewName.length > 1) {
+            self.fileNewName = [self.fileNewName substringToIndex:self.fileNewName.length-1];
+        } else {
+            self.fileNewName = nil;
+        }
+    }
+}
+
+- (void) fileNewClear
+{
+    self.fileNewName = nil;
 }
 
 @end

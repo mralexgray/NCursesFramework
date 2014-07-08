@@ -42,6 +42,7 @@ static NSMutableArray *allKeys = nil;
     [allKeys addObject:[self NCKEY_t]];
     [allKeys addObject:[self NCKEY_u]];
     [allKeys addObject:[self NCKEY_v]];
+    [allKeys addObject:[self NCKEY_w]];
     [allKeys addObject:[self NCKEY_x]];
     [allKeys addObject:[self NCKEY_y]];
     
@@ -67,6 +68,7 @@ static NSMutableArray *allKeys = nil;
     [allKeys addObject:[self NCKEY_T]];
     [allKeys addObject:[self NCKEY_U]];
     [allKeys addObject:[self NCKEY_V]];
+    [allKeys addObject:[self NCKEY_W]];
     [allKeys addObject:[self NCKEY_X]];
     [allKeys addObject:[self NCKEY_Y]];
     
@@ -205,6 +207,11 @@ static NSMutableArray *allKeys = nil;
     return [[NCKey alloc] initWithChar:'v'];
 }
 
++ (NCKey *) NCKEY_w
+{
+    return [[NCKey alloc] initWithChar:'w'];
+}
+
 + (NCKey *) NCKEY_x
 {
     return [[NCKey alloc] initWithChar:'x'];
@@ -328,6 +335,11 @@ static NSMutableArray *allKeys = nil;
 + (NCKey *) NCKEY_V
 {
     return [[NCKey alloc] initWithChar:'V'];
+}
+
++ (NCKey *) NCKEY_W
+{
+    return [[NCKey alloc] initWithChar:'W'];
 }
 
 + (NCKey *) NCKEY_X

@@ -86,6 +86,22 @@
     }
 }
 
+- (void)setCurrentTabName:(NSString *)name
+{
+    if(name && self.currentIndex >= 0 && self.currentIndex < self.items.count) {
+        TabMenuItem *item = [self.items objectAtIndex:self.currentIndex];
+        item.name = name;
+    }
+}
+
+- (void)setCurrentTabTag:(NSObject *)tag
+{
+    if(self.currentIndex >= 0 && self.currentIndex < self.items.count) {
+        TabMenuItem *item = [self.items objectAtIndex:self.currentIndex];
+        item.tag = tag;
+    }
+}
+
 - (void)drawRect:(CGRect)rect
        inContext:(NCRenderContext *)context
 {
