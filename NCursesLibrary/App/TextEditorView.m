@@ -79,7 +79,7 @@
     
     NSString *line = [self textOnLine:self.buffer.cursorLineY];
     if(line) {
-        self.buffer.cursorOffsetX = MIN((int)line.length - 1, self.buffer.cursorLineX);
+        self.buffer.cursorOffsetX = MIN((int)line.length, self.buffer.cursorLineX);
     } else {
         self.buffer.cursorOffsetX = 0;
     }
@@ -159,6 +159,8 @@
                         CGSize size = [context sizeOfText:line
                                                 breakMode:NCLineBreakByWordWrapping
                                                     width:rect.size.width];
+                        size.height = MAX(size.height, 1);
+                        
                         [context drawText:line
                                    inRect:CGRectMake(rect.origin.x, rect.origin.y + y, rect.size.width, size.height)
                            withForeground:[NCColor whiteColor]
