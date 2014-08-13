@@ -39,4 +39,9 @@
     return nil;
 }
 
+-(NSString *)description
+{
+    return [NSString stringWithFormat:@"\npath:%@\nlines:%lu\ncursorOffsetX:%i\ncursorOffsetY:%i\ncursorLineX:%i\ncursorLineY:%i\nscreenOffsetY:%i",self.path,(unsigned long)self.lines.count,self.cursorOffsetX,self.cursorOffsetY,self.cursorLineX,self.cursorLineY,self.screenOffsetY];
+}
+
 @end
