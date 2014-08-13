@@ -50,22 +50,29 @@
     } else {
         if(self.commandMode) {
             if([key isEqualTo:[NCKey NCKEY_r]] || [key isEqualTo:[NCKey NCKEY_R]]) {
+                // Read new buffer
                 FileSelectorViewController *vc = [[FileSelectorViewController alloc] initWithPath:[[NSBundle mainBundle] bundlePath]
                                                                                           withTag:0];
                 vc.output = self;
                 [self.navigationController pushViewController:vc];
             }
             else if([key isEqualTo:[NCKey NCKEY_n]] || [key isEqualTo:[NCKey NCKEY_N]]) {
+                // New buffer
                 FileBuffer *nBuffer = [[FileBuffer alloc] init];
                 nBuffer.lines = [NSMutableArray arrayWithObject:[NSMutableString string]];
                 [self.tabMenuView addMenuItem:@"New buffer" tag:nBuffer];
             }
             else if([key isEqualTo:[NCKey NCKEY_w]] || [key isEqualTo:[NCKey NCKEY_W]]) {
+                // Write buffer
                 FileSelectorViewController *vc = [[FileSelectorViewController alloc] initWithPath:[[NSBundle mainBundle] bundlePath]
                                                                                           withTag:1];
                 vc.output = self;
                 vc.allowNewFile = YES;
                 [self.navigationController pushViewController:vc];
+            }
+            else if([key isEqualTo:[NCKey NCKEY_Q]] || [key isEqualTo:[NCKey NCKEY_q]] || [key isEqualTo:[NCKey NCKEY_c]] || [key isEqualTo:[NCKey NCKEY_C]]) {
+                // Close buffer
+                [self.tabMenuView removeCurrentItem];
             }
             else if([key isEqualTo:[NCKey NCKEY_ARROW_LEFT]]) {
                 [self.tabMenuView moveLeft];

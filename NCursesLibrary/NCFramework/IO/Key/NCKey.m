@@ -409,7 +409,7 @@ static NSMutableArray *allKeys = nil;
             return key;
         }
     }
-    return nil;
+    return [[NCKey alloc] initWithChar:c];
 }
 
 - (BOOL)isEqual:(NCKey*)object

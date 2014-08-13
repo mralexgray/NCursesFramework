@@ -53,6 +53,12 @@
         if(self.currentIndex >= self.items.count && self.currentIndex != 0) {
             self.currentIndex--;
         }
+        
+        if(self.items.count > 0 && self.currentIndex >= 0 && self.currentIndex < self.items.count) {
+            if(self.output && [self.output respondsToSelector:@selector(didSelectItem:)]) {
+                [self.output didSelectItem:[self.items objectAtIndex:self.currentIndex]];
+            }
+        }
     }
 }
 

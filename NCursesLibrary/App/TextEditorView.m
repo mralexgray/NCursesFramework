@@ -62,7 +62,7 @@
 
 - (void)moveDown
 {
-    if(self.buffer.cursorOffsetY + 1 < MIN(self.frame.size.height, (int)self.buffer.lines.count-1))
+    if(self.buffer.cursorOffsetY + 1 < MIN(self.frame.size.height, (int)self.buffer.lines.count))
     {
         self.buffer.cursorOffsetY++;
         self.buffer.cursorLineY++;
