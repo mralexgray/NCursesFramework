@@ -10,7 +10,7 @@
 
 @interface TabMenuItem : NSObject
 @property (nonatomic, strong) NSString *name;
-@property (nonatomic, assign) NSObject *tag;
+@property (nonatomic, strong) NSObject *tag;
 @end
 
 @protocol TabMenuViewOutput <NSObject>
