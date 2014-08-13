@@ -148,6 +148,7 @@
     if(!self.hidden) {
         if([self bufferIsOpen]) {
             if(![self bufferIsEmpty]) {
+                
                 int y = 0;
                 for(int i = self.buffer.screenOffsetY; i < self.buffer.lines.count; i++) {
                     NSString *line = [self.buffer.lines objectAtIndex:i];

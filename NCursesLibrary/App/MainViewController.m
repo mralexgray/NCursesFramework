@@ -110,6 +110,8 @@
 {
     if(item.tag) {
         [self.textEditorView openBuffer:(FileBuffer*)item.tag];
+    } else {
+    	[self.textEditorView openBuffer:nil];
     }
 }
 
