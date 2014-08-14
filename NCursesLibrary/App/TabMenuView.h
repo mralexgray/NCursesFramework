@@ -24,7 +24,7 @@
 
 - (void) addMenuItem:(NSString*)name
                  tag:(NSObject*)tag;
-- (void) removeCurrentItem;
+- (BOOL) removeCurrentItem;
 - (void) removeAllItems;
 
 - (void) moveLeft;

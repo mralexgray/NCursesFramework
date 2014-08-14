@@ -46,13 +46,16 @@
     }
 }
 
-- (void)removeCurrentItem
+- (BOOL)removeCurrentItem
 {
+    BOOL didRemove = NO;
+    
     if(self.currentIndex >= 0 && self.currentIndex < self.items.count) {
         [self.items removeObjectAtIndex:self.currentIndex];
         if(self.currentIndex >= self.items.count && self.currentIndex != 0) {
             self.currentIndex--;
         }
+        didRemove = YES;
     }
     
     if(self.items.count > 0 && self.currentIndex >= 0 && self.currentIndex < self.items.count) {
@@ -64,6 +67,8 @@
             [self.output didSelectItem:nil];
         }
     }
+    
+    return didRemove;
 }
 
 - (void)removeAllItems

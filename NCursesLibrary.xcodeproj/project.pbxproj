@@ -11,7 +11,7 @@
 		2C517164196B383100726A5F /* NCLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C517163196B383100726A5F /* NCLabel.m */; };
 		2C54CC32194B46CA00D11D59 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C54CC31194B46CA00D11D59 /* Foundation.framework */; };
 		2C54CC35194B46CA00D11D59 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C54CC34194B46CA00D11D59 /* main.m */; };
-		2C54CC39194B46CA00D11D59 /* NCursesLibrary.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = 2C54CC38194B46CA00D11D59 /* NCursesLibrary.1 */; };
+		2C54CC39194B46CA00D11D59 /* NCursesLibrary.1 in Copy Files */ = {isa = PBXBuildFile; fileRef = 2C54CC38194B46CA00D11D59 /* NCursesLibrary.1 */; };
 		2C6E6F721953358600554E9F /* NCAlertViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C6E6F711953358600554E9F /* NCAlertViewController.m */; };
 		2C7481E9195154F0001C40CC /* TestApplication.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C7481BF195154F0001C40CC /* TestApplication.m */; };
 		2C7481EA195154F0001C40CC /* FSViewer.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C7481C1195154F0001C40CC /* FSViewer.m */; };
@@ -34,14 +34,15 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		2C54CC2C194B46CA00D11D59 /* CopyFiles */ = {
+		2C54CC2C194B46CA00D11D59 /* Copy Files */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = /usr/share/man/man1/;
 			dstSubfolderSpec = 0;
 			files = (
-				2C54CC39194B46CA00D11D59 /* NCursesLibrary.1 in CopyFiles */,
+				2C54CC39194B46CA00D11D59 /* NCursesLibrary.1 in Copy Files */,
 			);
+			name = "Copy Files";
 			runOnlyForDeploymentPostprocessing = 1;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -51,7 +52,7 @@
 		2C0605C519571A95000B7552 /* TextEditorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TextEditorView.m; sourceTree = "<group>"; };
 		2C517162196B383100726A5F /* NCLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCLabel.h; sourceTree = "<group>"; };
 		2C517163196B383100726A5F /* NCLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCLabel.m; sourceTree = "<group>"; };
-		2C54CC2E194B46CA00D11D59 /* NCursesLibrary */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = NCursesLibrary; sourceTree = BUILT_PRODUCTS_DIR; };
+		2C54CC2E194B46CA00D11D59 /* typr */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = typr; sourceTree = BUILT_PRODUCTS_DIR; };
 		2C54CC31194B46CA00D11D59 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		2C54CC34194B46CA00D11D59 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		2C54CC37194B46CA00D11D59 /* NCursesLibrary-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NCursesLibrary-Prefix.pch"; sourceTree = "<group>"; };
@@ -121,7 +122,7 @@
 		2C54CC2F194B46CA00D11D59 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				2C54CC2E194B46CA00D11D59 /* NCursesLibrary */,
+				2C54CC2E194B46CA00D11D59 /* typr */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -324,7 +325,7 @@
 			buildPhases = (
 				2C54CC2A194B46CA00D11D59 /* Sources */,
 				2C54CC2B194B46CA00D11D59 /* Frameworks */,
-				2C54CC2C194B46CA00D11D59 /* CopyFiles */,
+				2C54CC2C194B46CA00D11D59 /* Copy Files */,
 				2C54CC3F194B479300D11D59 /* ShellScript */,
 			);
 			buildRules = (
@@ -333,7 +334,7 @@
 			);
 			name = NCursesLibrary;
 			productName = NCursesLibrary;
-			productReference = 2C54CC2E194B46CA00D11D59 /* NCursesLibrary */;
+			productReference = 2C54CC2E194B46CA00D11D59 /* typr */;
 			productType = "com.apple.product-type.tool";
 		};
 /* End PBXNativeTarget section */
@@ -487,7 +488,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "NCursesLibrary/NCursesLibrary-Prefix.pch";
 				OTHER_LDFLAGS = "-lncurses";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = typr;
 			};
 			name = Debug;
 		};
@@ -497,7 +498,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "NCursesLibrary/NCursesLibrary-Prefix.pch";
 				OTHER_LDFLAGS = "-lncurses";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = typr;
 			};
 			name = Release;
 		};

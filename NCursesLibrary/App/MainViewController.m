@@ -8,6 +8,7 @@
 
 #import "MainViewController.h"
 
+#import "NCApplication.h"
 #import "NCNavigationController.h"
 #import "NCAlertView.h"
 #import "NCLabel.h"
@@ -72,7 +73,9 @@
             }
             else if([key isEqualTo:[NCKey NCKEY_Q]] || [key isEqualTo:[NCKey NCKEY_q]] || [key isEqualTo:[NCKey NCKEY_c]] || [key isEqualTo:[NCKey NCKEY_C]]) {
                 // Close buffer
-                [self.tabMenuView removeCurrentItem];
+                if(![self.tabMenuView removeCurrentItem]) {
+                    [[NCApplication sharedApplication] closeApplication];
+                }
             }
             else if([key isEqualTo:[NCKey NCKEY_ARROW_LEFT]]) {
                 [self.tabMenuView moveLeft];
