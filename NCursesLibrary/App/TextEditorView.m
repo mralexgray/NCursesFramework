@@ -10,6 +10,8 @@
 
 @implementation TextEditorView
 
+#pragma mark Public methods
+
 - (void)moveLeft
 {
     if(self.buffer.cursorOffsetX > 0) {
@@ -127,10 +129,28 @@
     }
 }
 
+- (void)startMarkMode
+{
+    if(self.buffer) {
+        self.buffer.markMode = YES;
+    }
+}
+
+- (BOOL)stopMarkMode
+{
+    if(self.buffer && self.buffer.markMode) {
+        self.buffer.markMode = NO;
+        return YES;
+    }
+    return NO;
+}
+
 - (void)openBuffer:(FileBuffer *)buffer
 {
     self.buffer = buffer;
 }
+
+#pragma mark Private methods
 
 - (BOOL) bufferIsOpen
 {
@@ -167,13 +187,12 @@
                             alignmentMode:NCLineAlignmentLeft];
                         
                         if(i == self.buffer.cursorLineY) {
-                            int cx = self.buffer.cursorOffsetX;
-                            int cy = 0;
-                            while(cx >= size.width && size.height > 1) {
-                                cx -= size.width;
-                                cy++;
-                            }
-                            [context drawPoint:CGSizeMake(self.frame.origin.x + cx, self.frame.origin.y + y + cy)
+                            CGSize cursor = [context locationForX:self.buffer.cursorOffsetX
+                                                           inText:line
+                                                           inRect:CGRectMake(rect.origin.x, rect.origin.y + y, rect.size.width, size.height)
+                                                        breakMode:NCLineBreakByWordWrapping
+                                                      tuncateMode:NCLineTruncationByClipping];
+                            [context drawPoint:CGSizeMake(self.frame.origin.x + cursor.width, self.frame.origin.y + y + cursor.height)
                                 withForeground:[NCColor blackColor]
                                 withBackground:[NCColor whiteColor]];
                         }

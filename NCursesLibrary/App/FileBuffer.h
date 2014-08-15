@@ -21,6 +21,8 @@
 
 @property (nonatomic, assign) int screenOffsetY;
 
+@property (nonatomic, assign) BOOL markMode;
+
 + (id) fileBufferFromFilePath:(NSString*)path;
 
 @end

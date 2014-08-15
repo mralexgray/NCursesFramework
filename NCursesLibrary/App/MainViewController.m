@@ -82,9 +82,15 @@
             }
             else if([key isEqualTo:[NCKey NCKEY_Q]] || [key isEqualTo:[NCKey NCKEY_q]]) {
                 // Close buffer
-                if(![self.tabMenuView removeCurrentItem]) {
-                    [[NCApplication sharedApplication] closeApplication];
+                if(![self.textEditorView stopMarkMode]) {
+                    if(![self.tabMenuView removeCurrentItem]) {
+                        [[NCApplication sharedApplication] closeApplication];
+                    }
                 }
+            }
+            else if([key isEqualTo:[NCKey NCKEY_M]] || [key isEqualTo:[NCKey NCKEY_m]]) {
+                // Mark mode
+                [self.textEditorView startMarkMode];
             }
             else if([key isEqualTo:[NCKey NCKEY_ARROW_LEFT]]) {
                 [self.tabMenuView moveLeft];

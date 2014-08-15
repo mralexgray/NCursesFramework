@@ -39,6 +39,12 @@ typedef enum : NSUInteger {
      truncateMode:(NCLineTruncationMode)truncate
     alignmentMode:(NCLineAlignment)alignment;
 
+- (CGSize) locationForX:(int)x
+                 inText:(NSString*)text
+                 inRect:(CGRect)rect
+              breakMode:(NCLineBreakMode)linebreak
+            tuncateMode:(NCLineTruncationMode)trucate;
+
 - (CGSize) sizeOfText:(NSString*)text
             breakMode:(NCLineBreakMode)linebreak
                 width:(int)width;

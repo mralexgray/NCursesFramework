@@ -78,6 +78,29 @@
 #endif
 }
 
+- (CGSize) locationForX:(int)x
+                 inText:(NSString*)text
+                 inRect:(CGRect)rect
+              breakMode:(NCLineBreakMode)linebreak
+            tuncateMode:(NCLineTruncationMode)trucate
+{
+    NSArray *lines = [self lineBreakAndTruncate:text
+                                         inRect:rect
+                                      lineBreak:linebreak
+                                      truncMode:trucate];
+    int y = 0;
+    for(int i = 0; i < lines.count; i++) {
+        NSString *line = [lines objectAtIndex:i];
+        if(line.length >= x) {
+            break;
+        } else if(line.length < x) {
+            y++;
+            x-=line.length;
+        }
+    }
+    return CGSizeMake(x, y);
+}
+
 - (CGSize) sizeOfText:(NSString*)text
             breakMode:(NCLineBreakMode)linebreak
                 width:(int)width

@@ -25,6 +25,9 @@
 - (void) addCharacter:(char)character;
 - (void) addNewLine;
 
+- (void) startMarkMode;
+- (BOOL) stopMarkMode;
+
 - (void) openBuffer:(FileBuffer*)buffer;
 
 @property (nonatomic, strong) id<TextEditorViewOutput> output;
