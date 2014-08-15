@@ -14,8 +14,8 @@
 int main(int argc, const char * argv[])
 {
 
-    @autoreleasepool {
-        
+    @autoreleasepool
+    {        
 #ifdef USE_CURSES
         initscr();
         curs_set(0);
@@ -31,13 +31,10 @@ int main(int argc, const char * argv[])
                 init_pair(colorCode, f, b);
             }
         }
-        
 #endif
         
         TestApplication *application = [[TestApplication alloc] init];
-        
         endwin();
-        
     }
     return 0;
 }

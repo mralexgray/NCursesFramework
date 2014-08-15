@@ -7,6 +7,7 @@
 //
 
 #import "MainViewController.h"
+#import "StartupOptions.h"
 
 #import "NCApplication.h"
 #import "NCNavigationController.h"
@@ -42,6 +43,14 @@
     [self.modeLabel setForegroundColor:[NCColor blackColor]];
     [self.modeLabel setBackgroundColor:[NCColor whiteColor]];
     [self.view addSubview:self.modeLabel];
+    
+    for(NSString *openFile in [StartupOptions openFiles]) {
+        FileBuffer *buffer = [FileBuffer fileBufferFromFilePath:openFile];
+        if(buffer) {
+            NSString *path = [[[NSFileManager defaultManager] currentDirectoryPath] stringByAppendingFormat:@"/%@",[openFile lastPathComponent]];
+            [self.tabMenuView addMenuItem:path tag:buffer];
+        }
+    }
 }
 
 - (void)keyPress:(NCKey *)key
@@ -52,7 +61,7 @@
         if(self.commandMode) {
             if([key isEqualTo:[NCKey NCKEY_r]] || [key isEqualTo:[NCKey NCKEY_R]]) {
                 // Read new buffer
-                FileSelectorViewController *vc = [[FileSelectorViewController alloc] initWithPath:[[NSBundle mainBundle] bundlePath]
+                FileSelectorViewController *vc = [[FileSelectorViewController alloc] initWithPath:[[NSFileManager defaultManager] currentDirectoryPath]
                                                                                           withTag:0];
                 vc.output = self;
                 [self.navigationController pushViewController:vc];
@@ -65,7 +74,7 @@
             }
             else if([key isEqualTo:[NCKey NCKEY_w]] || [key isEqualTo:[NCKey NCKEY_W]]) {
                 // Write buffer
-                FileSelectorViewController *vc = [[FileSelectorViewController alloc] initWithPath:[[NSBundle mainBundle] bundlePath]
+                FileSelectorViewController *vc = [[FileSelectorViewController alloc] initWithPath:[[NSFileManager defaultManager] currentDirectoryPath]
                                                                                           withTag:1];
                 vc.output = self;
                 vc.allowNewFile = YES;
