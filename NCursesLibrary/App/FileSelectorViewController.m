@@ -70,8 +70,9 @@
 
 - (void)didSelectFile:(NSString *)filePath
 {
-    NCAlertView *alert = [[NCAlertView alloc] initWithTitle:@"Open file"
-                                                 andMessage:[NSString stringWithFormat:@"Do you want to open '%@'?",filePath]];
+    NCAlertView *alert = [[NCAlertView alloc] initWithTitle:self.allowNewFile ? @"Write file" : @"Open file"
+                                                 andMessage:self.allowNewFile ? [NSString stringWithFormat:@"Do you want to write to '%@'?",filePath] :
+                          [NSString stringWithFormat:@"Do you want to open '%@'?",filePath]];
     [alert addButton:@"OK" withBlock:^{
         if(self.output && [self.output respondsToSelector:@selector(didSelectFile:withTag:)]) {
             [self.output didSelectFile:filePath

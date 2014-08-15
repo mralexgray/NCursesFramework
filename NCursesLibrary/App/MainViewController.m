@@ -80,7 +80,7 @@
                 vc.allowNewFile = YES;
                 [self.navigationController pushViewController:vc];
             }
-            else if([key isEqualTo:[NCKey NCKEY_Q]] || [key isEqualTo:[NCKey NCKEY_q]] || [key isEqualTo:[NCKey NCKEY_c]] || [key isEqualTo:[NCKey NCKEY_C]]) {
+            else if([key isEqualTo:[NCKey NCKEY_Q]] || [key isEqualTo:[NCKey NCKEY_q]]) {
                 // Close buffer
                 if(![self.tabMenuView removeCurrentItem]) {
                     [[NCApplication sharedApplication] closeApplication];
