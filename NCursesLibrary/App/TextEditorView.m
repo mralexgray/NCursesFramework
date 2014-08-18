@@ -166,8 +166,10 @@
 {
     if(self.buffer) {
         if(self.buffer.markMode) {
+            self.buffer.markCursorLineX = 0;
             self.buffer.markCursorOffsetX = 0;
         } else {
+            self.buffer.cursorLineX = 0;
             self.buffer.cursorOffsetX = 0;
         }
     }
@@ -177,8 +179,10 @@
 {
     if(self.buffer) {
         if(self.buffer.markMode) {
+            self.buffer.markCursorLineX = (int)[[self.buffer.lines objectAtIndex:self.buffer.markCursorLineY] length];
             self.buffer.markCursorOffsetX = (int)[[self.buffer.lines objectAtIndex:self.buffer.markCursorLineY] length];
         } else {
+            self.buffer.cursorLineX = (int)[[self.buffer.lines objectAtIndex:self.buffer.cursorLineY] length];
             self.buffer.cursorOffsetX = (int)[[self.buffer.lines objectAtIndex:self.buffer.cursorLineY] length];
         }
     }
