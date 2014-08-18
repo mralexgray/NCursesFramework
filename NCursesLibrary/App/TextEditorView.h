@@ -28,6 +28,10 @@
 - (void) startMarkMode;
 - (BOOL) stopMarkMode;
 
+- (NSArray*)markCut;
+- (NSArray*)markCopy;
+- (void)paste:(NSArray*)text;
+
 - (void) openBuffer:(FileBuffer*)buffer;
 
 @property (nonatomic, strong) id<TextEditorViewOutput> output;

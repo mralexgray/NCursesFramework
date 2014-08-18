@@ -16,6 +16,7 @@
 
 @interface MainViewController ()
 @property (nonatomic, assign) BOOL commandMode;
+@property (nonatomic, strong) NSArray *copiedText;
 
 @property (nonatomic, strong) TextEditorView *textEditorView;
 @property (nonatomic, strong) TabMenuView *tabMenuView;
@@ -91,6 +92,18 @@
             else if([key isEqualTo:[NCKey NCKEY_M]] || [key isEqualTo:[NCKey NCKEY_m]]) {
                 // Mark mode
                 [self.textEditorView startMarkMode];
+            }
+            else if([key isEqualTo:[NCKey NCKEY_C]] || [key isEqualTo:[NCKey NCKEY_c]]) {
+                // Copy
+                self.copiedText = [self.textEditorView markCopy];
+            }
+            else if([key isEqualTo:[NCKey NCKEY_X]] || [key isEqualTo:[NCKey NCKEY_x]]) {
+                // Cut
+                self.copiedText = [self.textEditorView markCut];
+            }
+            else if([key isEqualTo:[NCKey NCKEY_V]] || [key isEqualTo:[NCKey NCKEY_v]]) {
+                // Paste
+                [self.textEditorView paste:self.copiedText];
             }
             else if([key isEqualTo:[NCKey NCKEY_ARROW_LEFT]]) {
                 [self.tabMenuView moveLeft];

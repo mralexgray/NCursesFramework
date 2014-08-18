@@ -39,6 +39,7 @@
                        inRect:CGRectMake(rect.origin.x, rect.origin.y, rect.size.width, 1)
                withForeground:[NCColor whiteColor]
                withBackground:[NCColor blackColor]
+               withColorRange:nil
                     breakMode:NCLineBreakByNoWrapping
                  truncateMode:NCLineTruncationByTruncatingHead
                 alignmentMode:NCLineAlignmentCenter];
@@ -54,6 +55,7 @@
                        inRect:CGRectMake(rect.origin.x, rect.origin.y, textSize.width, 1)
                withForeground:[NCColor blackColor]
                withBackground:[NCColor whiteColor]
+               withColorRange:nil
                     breakMode:NCLineBreakByNoWrapping
                  truncateMode:NCLineTruncationByTruncationTail
                 alignmentMode:NCLineAlignmentLeft];
@@ -69,6 +71,7 @@
                        inRect:CGRectMake(rect.origin.x, rect.origin.y, textSize.width, 1)
                withForeground:[NCColor blackColor]
                withBackground:[NCColor whiteColor]
+               withColorRange:nil
                     breakMode:NCLineBreakByNoWrapping
                  truncateMode:NCLineTruncationByTruncationTail
                 alignmentMode:NCLineAlignmentLeft];
@@ -90,6 +93,7 @@
                            inRect:CGRectMake(rect.origin.x, rect.origin.y + y, textSize.width, textSize.height)
                    withForeground:[NCColor blackColor]
                    withBackground:[NCColor whiteColor]
+                   withColorRange:nil
                         breakMode:NCLineBreakByWordWrapping
                      truncateMode:NCLineTruncationByClipping
                     alignmentMode:NCLineAlignmentLeft];
@@ -98,6 +102,7 @@
                            inRect:CGRectMake(rect.origin.x, rect.origin.y + y, textSize.width, textSize.height)
                    withForeground:[NCColor whiteColor]
                    withBackground:[NCColor blackColor]
+                   withColorRange:nil
                         breakMode:NCLineBreakByWordWrapping
                      truncateMode:NCLineTruncationByClipping
                     alignmentMode:NCLineAlignmentLeft];
@@ -121,6 +126,7 @@
                            inRect:CGRectMake(rect.origin.x, rect.origin.y + y, textSize.width, textSize.height)
                    withForeground:[NCColor blackColor]
                    withBackground:[NCColor whiteColor]
+                   withColorRange:nil
                         breakMode:NCLineBreakByWordWrapping
                      truncateMode:NCLineTruncationByClipping
                     alignmentMode:NCLineAlignmentLeft];
@@ -129,6 +135,7 @@
                            inRect:CGRectMake(rect.origin.x, rect.origin.y + y, textSize.width, textSize.height)
                    withForeground:[NCColor whiteColor]
                    withBackground:[NCColor blackColor]
+                   withColorRange:nil
                         breakMode:NCLineBreakByWordWrapping
                      truncateMode:NCLineTruncationByClipping
                     alignmentMode:NCLineAlignmentLeft];

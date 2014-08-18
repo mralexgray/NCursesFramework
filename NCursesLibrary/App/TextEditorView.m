@@ -14,118 +14,206 @@
 
 - (void)moveLeft
 {
-    if(self.buffer.cursorOffsetX > 0) {
-        self.buffer.cursorOffsetX--;
-        self.buffer.cursorLineX = self.buffer.cursorOffsetX;
-    } else if(self.buffer.cursorLineY > 0) {
-        NSString *line = [self textOnLine:self.buffer.cursorLineY-1];
-        if(line) {
-            self.buffer.cursorLineX = (int)line.length;
-        } else {
-            self.buffer.cursorLineX = 0;
+    if(self.buffer.markMode)
+    {
+        if(self.buffer.markCursorOffsetX > 0) {
+            self.buffer.markCursorOffsetX--;
+            self.buffer.markCursorLineX = self.buffer.markCursorOffsetX;
+        } else if(self.buffer.markCursorLineY > 0) {
+            NSMutableString *line = [self textOnLine:self.buffer.markCursorLineY-1];
+            if(line) {
+                self.buffer.markCursorLineX = (int)line.length;
+            } else {
+                self.buffer.markCursorLineX = 0;
+            }
+            [self moveUp];
         }
-        [self moveUp];
+    }
+    else
+    {
+        if(self.buffer.cursorOffsetX > 0) {
+            self.buffer.cursorOffsetX--;
+            self.buffer.cursorLineX = self.buffer.cursorOffsetX;
+        } else if(self.buffer.cursorLineY > 0) {
+            NSMutableString *line = [self textOnLine:self.buffer.cursorLineY-1];
+            if(line) {
+                self.buffer.cursorLineX = (int)line.length;
+            } else {
+                self.buffer.cursorLineX = 0;
+            }
+            [self moveUp];
+        }
     }
 }
 
 - (void)moveUp
 {
-    if(self.buffer.cursorOffsetY > 0)
+    if(self.buffer.markMode)
     {
-        self.buffer.cursorOffsetY--;
-        self.buffer.cursorLineY--;
+        if(self.buffer.markCursorOffsetY > 0)
+        {
+            self.buffer.markCursorOffsetY--;
+            self.buffer.markCursorLineY--;
+        }
+        else if(self.buffer.markScreenOffsetY > 0)
+        {
+            self.buffer.markCursorLineY--;
+            self.buffer.markScreenOffsetY--;
+        }
+        
+        NSMutableString *line = [self textOnLine:self.buffer.markCursorLineY];
+        if(line) {
+            self.buffer.markCursorOffsetX = MIN((int)line.length, self.buffer.markCursorLineX);
+        } else {
+            self.buffer.markCursorOffsetX = 0;
+        }
     }
-    else if(self.buffer.screenOffsetY > 0)
+    else
     {
-        self.buffer.cursorLineY--;
-        self.buffer.screenOffsetY--;
-    }
-    
-    NSString *line = [self textOnLine:self.buffer.cursorLineY];
-    if(line) {
-        self.buffer.cursorOffsetX = MIN((int)line.length, self.buffer.cursorLineX);
-    } else {
-        self.buffer.cursorOffsetX = 0;
+        if(self.buffer.cursorOffsetY > 0)
+        {
+            self.buffer.cursorOffsetY--;
+            self.buffer.cursorLineY--;
+        }
+        else if(self.buffer.screenOffsetY > 0)
+        {
+            self.buffer.cursorLineY--;
+            self.buffer.screenOffsetY--;
+        }
+        
+        NSMutableString *line = [self textOnLine:self.buffer.cursorLineY];
+        if(line) {
+            self.buffer.cursorOffsetX = MIN((int)line.length, self.buffer.cursorLineX);
+        } else {
+            self.buffer.cursorOffsetX = 0;
+        }
     }
 }
 
 - (void)moveRight
 {
-    NSString *line = [self textOnLine:self.buffer.cursorLineY];
-    if(line && self.buffer.cursorOffsetX + 1 < line.length + 1) {
-        self.buffer.cursorOffsetX++;
-        self.buffer.cursorLineX = self.buffer.cursorOffsetX;
+    if(self.buffer.markMode)
+    {
+        NSMutableString *line = [self textOnLine:self.buffer.markCursorLineY];
+        if(line && self.buffer.markCursorOffsetX + 1 < line.length + 1) {
+            self.buffer.markCursorOffsetX++;
+            self.buffer.markCursorLineX = self.buffer.markCursorOffsetX;
+        }
+        else if(self.buffer.markCursorLineY+1 < self.buffer.lines.count) {
+            self.buffer.markCursorLineX = 0;
+            [self moveDown];
+        }
     }
-    else if(self.buffer.cursorLineY+1 < self.buffer.lines.count) {
-        self.buffer.cursorLineX = 0;
-        [self moveDown];
+    else
+    {
+        NSMutableString *line = [self textOnLine:self.buffer.cursorLineY];
+        if(line && self.buffer.cursorOffsetX + 1 < line.length + 1) {
+            self.buffer.cursorOffsetX++;
+            self.buffer.cursorLineX = self.buffer.cursorOffsetX;
+        }
+        else if(self.buffer.cursorLineY+1 < self.buffer.lines.count) {
+            self.buffer.cursorLineX = 0;
+            [self moveDown];
+        }
     }
 }
 
 - (void)moveDown
 {
-    if(self.buffer.cursorOffsetY + 1 < MIN(self.frame.size.height, (int)self.buffer.lines.count))
+    if(self.buffer.markMode)
     {
-        self.buffer.cursorOffsetY++;
-        self.buffer.cursorLineY++;
+        if(self.buffer.markCursorOffsetY + 1 < MIN(self.frame.size.height, (int)self.buffer.lines.count))
+        {
+            self.buffer.markCursorOffsetY++;
+            self.buffer.markCursorLineY++;
+        }
+        else if(self.buffer.markCursorLineY + 1 < (int)self.buffer.lines.count-1)
+        {
+            self.buffer.markCursorLineY++;
+            self.buffer.markScreenOffsetY++;
+        }
+        
+        NSMutableString *line = [self textOnLine:self.buffer.markCursorLineY];
+        if(line) {
+            self.buffer.markCursorOffsetX = MIN((int)line.length, self.buffer.markCursorLineX);
+        } else {
+            self.buffer.markCursorOffsetX = 0;
+        }
     }
-    else if(self.buffer.cursorLineY + 1 < (int)self.buffer.lines.count-1)
+    else
     {
-        self.buffer.cursorLineY++;
-        self.buffer.screenOffsetY++;
-    }
-    
-    NSString *line = [self textOnLine:self.buffer.cursorLineY];
-    if(line) {
-        self.buffer.cursorOffsetX = MIN((int)line.length, self.buffer.cursorLineX);
-    } else {
-        self.buffer.cursorOffsetX = 0;
+        if(self.buffer.cursorOffsetY + 1 < MIN(self.frame.size.height, (int)self.buffer.lines.count))
+        {
+            self.buffer.cursorOffsetY++;
+            self.buffer.cursorLineY++;
+        }
+        else if(self.buffer.cursorLineY + 1 < (int)self.buffer.lines.count-1)
+        {
+            self.buffer.cursorLineY++;
+            self.buffer.screenOffsetY++;
+        }
+        
+        NSMutableString *line = [self textOnLine:self.buffer.cursorLineY];
+        if(line) {
+            self.buffer.cursorOffsetX = MIN((int)line.length, self.buffer.cursorLineX);
+        } else {
+            self.buffer.cursorOffsetX = 0;
+        }
     }
 }
 
 - (void)backspace
 {
-    NSMutableString *line = [self textOnLine:self.buffer.cursorLineY];
-    if(line) {
-        if(line.length > 0) {
-            if(self.buffer.cursorOffsetX - 1 >= 0) {
-                [line deleteCharactersInRange:NSMakeRange(self.buffer.cursorOffsetX-1, 1)];
-                [self moveLeft];
-            } else {
-                if(self.buffer.cursorLineY > 0) {
-                    NSMutableString *lineAbove = [self textOnLine:self.buffer.cursorLineY - 1];
-                    self.buffer.cursorLineX = (int)lineAbove.length;
-                    [lineAbove appendString:line];
-                    [self moveUp];
-                    [self.buffer.lines removeObject:line];
+    if(!self.buffer.markMode)
+    {
+        NSMutableString *line = [self textOnLine:self.buffer.cursorLineY];
+        if(line) {
+            if(line.length > 0) {
+                if(self.buffer.cursorOffsetX - 1 >= 0) {
+                    [line deleteCharactersInRange:NSMakeRange(self.buffer.cursorOffsetX-1, 1)];
+                    [self moveLeft];
+                } else {
+                    if(self.buffer.cursorLineY > 0) {
+                        NSMutableString *lineAbove = [self textOnLine:self.buffer.cursorLineY - 1];
+                        self.buffer.cursorLineX = (int)lineAbove.length;
+                        [lineAbove appendString:line];
+                        [self moveUp];
+                        [self.buffer.lines removeObject:line];
+                    }
                 }
+            } else {
+                [self moveUp];
+                [self.buffer.lines removeObject:line];
             }
-        } else {
-            [self moveUp];
-            [self.buffer.lines removeObject:line];
         }
     }
 }
 
 - (void)addNewLine
 {
-    NSMutableString *line = [self textOnLine:self.buffer.cursorLineY];
-    if(line) {
-        NSString *rightSideOfCursor = [line substringFromIndex:self.buffer.cursorOffsetX];
-        NSMutableString *toAdd = [NSMutableString stringWithString:rightSideOfCursor];
-        [line deleteCharactersInRange:NSMakeRange(self.buffer.cursorOffsetX, line.length - self.buffer.cursorOffsetX)];
-        [self.buffer.lines insertObject:toAdd atIndex:self.buffer.cursorLineY+1];
-        self.buffer.cursorLineX = 0;
-        [self moveDown];
+    if(!self.buffer.markMode)
+    {
+        NSMutableString *line = [self textOnLine:self.buffer.cursorLineY];
+        if(line) {
+            NSString *rightSideOfCursor = [line substringFromIndex:self.buffer.cursorOffsetX];
+            NSMutableString *toAdd = [NSMutableString stringWithString:rightSideOfCursor];
+            [line deleteCharactersInRange:NSMakeRange(self.buffer.cursorOffsetX, line.length - self.buffer.cursorOffsetX)];
+            [self.buffer.lines insertObject:toAdd atIndex:self.buffer.cursorLineY+1];
+            self.buffer.cursorLineX = 0;
+            [self moveDown];
+        }
     }
 }
 
 - (void)addCharacter:(char)character
 {
-    NSMutableString *line = [self textOnLine:self.buffer.cursorLineY];
-    if(line) {
-        [line insertString:[NSString stringWithFormat:@"%c",character] atIndex:self.buffer.cursorOffsetX];
-        [self moveRight];
+    if(!self.buffer.markMode)
+    {
+        NSMutableString *line = [self textOnLine:self.buffer.cursorLineY];
+        if(line) {
+            [line insertString:[NSString stringWithFormat:@"%c",character] atIndex:self.buffer.cursorOffsetX];
+            [self moveRight];
+        }
     }
 }
 
@@ -133,6 +221,10 @@
 {
     if(self.buffer) {
         self.buffer.markMode = YES;
+        self.buffer.markCursorLineX = self.buffer.cursorLineX;
+        self.buffer.markCursorLineY = self.buffer.cursorLineY;
+        self.buffer.markCursorOffsetX = self.buffer.cursorOffsetX;
+        self.buffer.markCursorOffsetY = self.buffer.cursorOffsetY;
     }
 }
 
@@ -145,12 +237,123 @@
     return NO;
 }
 
+- (NSArray*)markCut
+{
+    NSArray *text = nil;
+    if(self.buffer && self.buffer.markMode) {
+        text = [self markedTextWithDelete:YES];
+        if(self.buffer.markCursorLineY < self.buffer.cursorLineY) {
+            self.buffer.cursorLineY = self.buffer.markCursorLineY;
+            self.buffer.cursorLineX = self.buffer.markCursorLineX;
+            self.buffer.cursorOffsetX = self.buffer.markCursorOffsetX;
+            self.buffer.cursorOffsetY = self.buffer.markCursorOffsetY;
+            self.buffer.screenOffsetY = self.buffer.markScreenOffsetY;
+        } else if(self.buffer.markCursorLineY == self.buffer.cursorLineY) {
+            self.buffer.cursorLineX = MIN(self.buffer.markCursorLineX, self.buffer.cursorLineX);
+            self.buffer.cursorOffsetX = MIN(self.buffer.markCursorOffsetX, self.buffer.cursorOffsetX);
+        }
+        self.buffer.markMode = NO;
+    }
+    return text;
+}
+
+- (NSArray*)markCopy
+{
+    NSArray *text = nil;
+    if(self.buffer && self.buffer.markMode) {
+        text = [self markedTextWithDelete:NO];
+        self.buffer.markMode = NO;
+    }
+    return text;
+}
+
+- (void)paste:(NSArray*)text
+{
+    if(self.buffer && !self.buffer.markMode) {
+        NSString *contentOnFirstLine = nil;
+        for(int i = self.buffer.cursorLineY; i < self.buffer.cursorLineY + text.count; i++) {
+            
+            BOOL isFirstCopyLine = i == self.buffer.cursorLineY;
+            if(isFirstCopyLine) {
+                contentOnFirstLine = [[self.buffer.lines objectAtIndex:i] substringFromIndex:self.buffer.cursorLineX];
+                if(contentOnFirstLine) {
+                    [[self.buffer.lines objectAtIndex:i] deleteCharactersInRange:NSMakeRange(self.buffer.cursorLineX, contentOnFirstLine.length)];
+                }
+                [[self.buffer.lines objectAtIndex:i] appendString:[text objectAtIndex:i - self.buffer.cursorLineY]];
+            } else {
+                [self.buffer.lines insertObject:[text objectAtIndex:i - self.buffer.cursorLineY] atIndex:i];
+            }
+            
+            BOOL isLastCopyLine = i == self.buffer.cursorLineY + text.count - 1;
+            if(isLastCopyLine && contentOnFirstLine) {
+                [[self.buffer.lines objectAtIndex:i] appendString:contentOnFirstLine];
+            }
+        }
+    }
+}
+
 - (void)openBuffer:(FileBuffer *)buffer
 {
     self.buffer = buffer;
 }
 
 #pragma mark Private methods
+
+- (NSArray*) markedTextWithDelete:(BOOL)delete
+{
+    NSMutableArray *deletedText = [NSMutableArray array];
+    
+    int lineStart = MIN(self.buffer.cursorLineY, self.buffer.markCursorLineY);
+    int lineEnd = MAX(self.buffer.cursorLineY, self.buffer.markCursorLineY);
+    
+    int posStart = MIN(self.buffer.cursorLineX, self.buffer.markCursorLineX);
+    int posEnd = MAX(self.buffer.cursorLineX, self.buffer.markCursorLineX);
+    
+    if(self.buffer.cursorLineY < self.buffer.markCursorLineY) {
+        posStart = self.buffer.cursorLineX;
+        posEnd = self.buffer.markCursorLineX;
+    } else if(self.buffer.cursorLineY > self.buffer.markCursorLineY) {
+        posStart = self.buffer.markCursorLineX;
+        posEnd = self.buffer.cursorLineX;
+    }
+    posEnd++;
+    
+    if(lineStart == lineEnd) {
+        NSRange range = NSMakeRange(posStart, posEnd - posStart);
+        [deletedText addObject:[NSMutableString stringWithString:[[self.buffer.lines objectAtIndex:lineStart] substringWithRange:range]]];
+        if(delete) {
+            [[self.buffer.lines objectAtIndex:lineStart] deleteCharactersInRange:range];
+        }
+    } else {
+        for(int i = lineEnd; i >= lineStart; i--) {
+            if(i == lineEnd)
+            {
+                NSRange range = NSMakeRange(0, posEnd);
+                [deletedText addObject:[NSMutableString stringWithString:[[self.buffer.lines objectAtIndex:i] substringWithRange:range]]];
+                if(delete) {
+                    [[self.buffer.lines objectAtIndex:i] deleteCharactersInRange:range];
+                }
+            }
+            else if(i == lineStart)
+            {
+                NSRange range = NSMakeRange(posStart, [[self.buffer.lines objectAtIndex:i] length] - posStart);
+                [deletedText addObject:[NSMutableString stringWithString:[[self.buffer.lines objectAtIndex:i] substringWithRange:range]]];
+                if(delete) {
+                    [[self.buffer.lines objectAtIndex:i] deleteCharactersInRange:range];
+                }
+            }
+            else
+            {
+                [deletedText addObject:[NSMutableString stringWithString:[self.buffer.lines objectAtIndex:i]]];
+                if(delete) {
+                    [self.buffer.lines removeObjectAtIndex:i];
+                }
+            }
+        }
+    }
+    
+    return deletedText;
+}
 
 - (BOOL) bufferIsOpen
 {
@@ -170,9 +373,50 @@
             if(![self bufferIsEmpty]) {
                 
                 int y = 0;
-                for(int i = self.buffer.screenOffsetY; i < self.buffer.lines.count; i++) {
+                for(int i = self.buffer.markMode ? self.buffer.markScreenOffsetY : self.buffer.screenOffsetY; i < self.buffer.lines.count; i++) {
                     NSString *line = [self.buffer.lines objectAtIndex:i];
                     if(line) {
+                        NCColorRange *colorRange = nil;
+                        NCColor *fg = [NCColor whiteColor];
+                        NCColor *bg = [NCColor blackColor];
+                        
+                        // Create mark color range
+                        if(self.buffer.markMode)
+                        {
+                            BOOL isLineBetweenCursors = (i > self.buffer.cursorLineY && i < self.buffer.markCursorLineY) ||
+                            (i < self.buffer.cursorLineY && i > self.buffer.markCursorLineY);
+                            
+                            BOOL isLineStartAndEnd = i == self.buffer.cursorLineY && i == self.buffer.markCursorLineY;
+                            BOOL isLineStart = i == MIN(self.buffer.cursorLineY, self.buffer.markCursorLineY);
+                            BOOL isLineEnd = i == MAX(self.buffer.cursorLineY, self.buffer.markCursorLineY);
+                            
+                            if(isLineBetweenCursors) {
+                                fg = [NCColor blackColor];
+                                bg = [NCColor whiteColor];
+                            } else if(isLineStartAndEnd) {
+                                if(self.buffer.cursorLineY == self.buffer.markCursorLineY)
+                                {
+                                    int min = MIN(self.buffer.cursorLineX, self.buffer.markCursorLineX);
+                                    int max = MAX(self.buffer.cursorLineX, self.buffer.markCursorLineX);
+                                    int len = max - min;
+                                    colorRange = [[NCColorRange alloc] initWithForeground:[NCColor blackColor]
+                                                                           withBackground:[NCColor whiteColor]
+                                                                                withRange:NSMakeRange(min, len)];
+                                }
+                            } else if(isLineStart) {
+                                int x = self.buffer.cursorLineY < self.buffer.markCursorLineY ? self.buffer.cursorLineX : self.buffer.markCursorLineX;
+                                colorRange = [[NCColorRange alloc] initWithForeground:[NCColor blackColor]
+                                                                       withBackground:[NCColor whiteColor]
+                                                                            withRange:NSMakeRange(x, line.length - x)];
+                            } else if(isLineEnd) {
+                                int x = self.buffer.cursorLineY > self.buffer.markCursorLineY ? self.buffer.cursorLineX : self.buffer.markCursorLineX;
+                                colorRange = [[NCColorRange alloc] initWithForeground:[NCColor blackColor]
+                                                                       withBackground:[NCColor whiteColor]
+                                                                            withRange:NSMakeRange(0, x)];
+                            }
+                        }
+                        
+                        
                         CGSize size = [context sizeOfText:line
                                                 breakMode:NCLineBreakByWordWrapping
                                                     width:rect.size.width];
@@ -180,14 +424,15 @@
                         
                         [context drawText:line
                                    inRect:CGRectMake(rect.origin.x, rect.origin.y + y, rect.size.width, size.height)
-                           withForeground:[NCColor whiteColor]
-                           withBackground:[NCColor blackColor]
+                           withForeground:fg
+                           withBackground:bg
+                           withColorRange:colorRange
                                 breakMode:NCLineBreakByWordWrapping
                              truncateMode:NCLineTruncationByClipping
                             alignmentMode:NCLineAlignmentLeft];
                         
-                        if(i == self.buffer.cursorLineY) {
-                            CGSize cursor = [context locationForX:self.buffer.cursorOffsetX
+                        if(!self.buffer.markMode && i == self.buffer.cursorLineY) {
+                            CGSize cursor = [context locationForX:self.buffer.markMode ? self.buffer.markCursorOffsetX : self.buffer.cursorOffsetX
                                                            inText:line
                                                            inRect:CGRectMake(rect.origin.x, rect.origin.y + y, rect.size.width, size.height)
                                                         breakMode:NCLineBreakByWordWrapping
@@ -210,6 +455,7 @@
                        inRect:CGRectMake(rect.origin.x, rect.origin.y + rect.size.height / 2, rect.size.width, 1)
                withForeground:[NCColor whiteColor]
                withBackground:[NCColor blackColor]
+               withColorRange:nil
                     breakMode:NCLineBreakByNoWrapping
                  truncateMode:NCLineTruncationByTruncationTail
                 alignmentMode:NCLineAlignmentCenter];

@@ -38,11 +38,13 @@
            inRect:(CGRect)rect
    withForeground:(NCColor*)fcolor
    withBackground:(NCColor*)bcolor
+   withColorRange:(NCColorRange*)colorRange
         breakMode:(NCLineBreakMode)linebreak
      truncateMode:(NCLineTruncationMode)truncate
     alignmentMode:(NCLineAlignment)alignment
 {
 #ifdef USE_CURSES
+    int index = 0;
     NSArray *lines = [self lineBreakAndTruncate:text
                                          inRect:rect
                                       lineBreak:linebreak
@@ -64,12 +66,29 @@
                 
                 NCRender *render = [[self.matrix objectAtIndex:rect.origin.x + x + xOffset] objectAtIndex:rect.origin.y + y];
                 render.character = c;
-                if(fcolor && ![fcolor isEqual:[NCColor clearColor]]) {
-                    render.foregroundColor = fcolor;
+                
+                BOOL didColor = false;
+                if(colorRange) {
+                    if(colorRange.range.location <= index && colorRange.range.location + colorRange.range.length >= index) {
+                        if(colorRange.foreground && ![colorRange.foreground isEqual:[NCColor clearColor]]) {
+                            render.foregroundColor = colorRange.foreground;
+                        }
+                        if(colorRange.background && ![colorRange.background isEqual:[NCColor clearColor]]) {
+                            render.backgroundColor = colorRange.background;
+                        }
+                        didColor = YES;
+                    }
                 }
-                if(bcolor && ![bcolor isEqual:[NCColor clearColor]]) {
-                    render.backgroundColor = bcolor;
+                if(!didColor)
+                {
+                    if(fcolor && ![fcolor isEqual:[NCColor clearColor]]) {
+                        render.foregroundColor = fcolor;
+                    }
+                    if(bcolor && ![bcolor isEqual:[NCColor clearColor]]) {
+                        render.backgroundColor = bcolor;
+                    }
                 }
+                index++;
             } else {
                 break;
             }

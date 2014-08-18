@@ -138,6 +138,7 @@
                            inRect:CGRectMake(self.frame.origin.x + rx, self.frame.origin.y, lenToDraw, 1)
                    withForeground:i == self.currentIndex ? self.passiveColor : self.activeColor
                    withBackground:i == self.currentIndex ? self.activeColor : self.passiveColor
+                   withColorRange:nil
                         breakMode:NCLineBreakByNoWrapping
                      truncateMode:NCLineTruncationByClipping
                     alignmentMode:NCLineAlignmentLeft];

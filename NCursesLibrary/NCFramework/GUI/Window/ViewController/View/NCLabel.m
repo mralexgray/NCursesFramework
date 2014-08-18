@@ -29,6 +29,7 @@
                    inRect:rect
            withForeground:self.foregroundColor ? self.foregroundColor : [NCColor whiteColor]
            withBackground:self.backgroundColor ? self.backgroundColor : [NCColor blackColor]
+           withColorRange:nil
                 breakMode:self.lineBreak
              truncateMode:self.lineTruncation
             alignmentMode:self.lineAlignment];

@@ -13,6 +13,7 @@
 		2C54CC32194B46CA00D11D59 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C54CC31194B46CA00D11D59 /* Foundation.framework */; };
 		2C54CC35194B46CA00D11D59 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C54CC34194B46CA00D11D59 /* main.m */; };
 		2C54CC39194B46CA00D11D59 /* NCursesLibrary.1 in Copy Files */ = {isa = PBXBuildFile; fileRef = 2C54CC38194B46CA00D11D59 /* NCursesLibrary.1 */; };
+		2C61EDE8199E554C00FF9AB7 /* NCColorRange.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C61EDE7199E554C00FF9AB7 /* NCColorRange.m */; };
 		2C6E6F721953358600554E9F /* NCAlertViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C6E6F711953358600554E9F /* NCAlertViewController.m */; };
 		2C7481E9195154F0001C40CC /* TestApplication.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C7481BF195154F0001C40CC /* TestApplication.m */; };
 		2C7481EA195154F0001C40CC /* FSViewer.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C7481C1195154F0001C40CC /* FSViewer.m */; };
@@ -60,6 +61,8 @@
 		2C54CC34194B46CA00D11D59 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		2C54CC37194B46CA00D11D59 /* NCursesLibrary-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NCursesLibrary-Prefix.pch"; sourceTree = "<group>"; };
 		2C54CC38194B46CA00D11D59 /* NCursesLibrary.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = NCursesLibrary.1; sourceTree = "<group>"; };
+		2C61EDE6199E554C00FF9AB7 /* NCColorRange.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCColorRange.h; sourceTree = "<group>"; };
+		2C61EDE7199E554C00FF9AB7 /* NCColorRange.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCColorRange.m; sourceTree = "<group>"; };
 		2C6E6F701953358600554E9F /* NCAlertViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NCAlertViewController.h; sourceTree = "<group>"; };
 		2C6E6F711953358600554E9F /* NCAlertViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NCAlertViewController.m; sourceTree = "<group>"; };
 		2C6E6F731953375300554E9F /* NCAlertView_Protected.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NCAlertView_Protected.h; sourceTree = "<group>"; };
@@ -259,6 +262,8 @@
 			children = (
 				2C7481D8195154F0001C40CC /* NCColor.h */,
 				2C7481D9195154F0001C40CC /* NCColor.m */,
+				2C61EDE6199E554C00FF9AB7 /* NCColorRange.h */,
+				2C61EDE7199E554C00FF9AB7 /* NCColorRange.m */,
 			);
 			path = Color;
 			sourceTree = "<group>";
@@ -411,6 +416,7 @@
 				2C7481F5195154F0001C40CC /* NCRenderContext.m in Sources */,
 				2C7481F1195154F0001C40CC /* NCView.m in Sources */,
 				2CE208371952AC1A001C93A2 /* NCAlertView.m in Sources */,
+				2C61EDE8199E554C00FF9AB7 /* NCColorRange.m in Sources */,
 				2CA432951959AF9500930CC5 /* TabMenuView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

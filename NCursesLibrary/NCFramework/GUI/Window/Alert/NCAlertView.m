@@ -78,6 +78,7 @@
                    inRect:CGRectMake(x, rect.origin.y, 1, 1)
            withForeground:[NCColor whiteColor]
            withBackground:[NCColor blackColor]
+           withColorRange:nil
                 breakMode:NCLineBreakByNoWrapping
              truncateMode:NCLineTruncationByClipping
             alignmentMode:NCLineAlignmentLeft];
@@ -86,6 +87,7 @@
                    inRect:CGRectMake(x, rect.origin.y + rect.size.height - 1, 1, 1)
            withForeground:[NCColor whiteColor]
            withBackground:[NCColor blackColor]
+           withColorRange:nil
                 breakMode:NCLineBreakByNoWrapping
              truncateMode:NCLineTruncationByClipping
             alignmentMode:NCLineAlignmentLeft];
@@ -96,6 +98,7 @@
                    inRect:CGRectMake(rect.origin.x, y, 1, 1)
            withForeground:[NCColor whiteColor]
            withBackground:[NCColor blackColor]
+           withColorRange:nil
                 breakMode:NCLineBreakByNoWrapping
              truncateMode:NCLineTruncationByClipping
             alignmentMode:NCLineAlignmentLeft];
@@ -104,6 +107,7 @@
                    inRect:CGRectMake(rect.origin.x + rect.size.width - 1, y, 1, 1)
            withForeground:[NCColor whiteColor]
            withBackground:[NCColor blackColor]
+           withColorRange:nil
                 breakMode:NCLineBreakByNoWrapping
              truncateMode:NCLineTruncationByClipping
             alignmentMode:NCLineAlignmentLeft];
@@ -114,6 +118,7 @@
                    inRect:CGRectMake(rect.origin.x + 1, rect.origin.y + 1, rect.size.width - 2, 1)
            withForeground:[NCColor whiteColor]
            withBackground:[NCColor blackColor]
+           withColorRange:nil
                 breakMode:NCLineBreakByNoWrapping
              truncateMode:NCLineTruncationByTruncationTail
             alignmentMode:NCLineAlignmentCenter];
@@ -124,6 +129,7 @@
                    inRect:CGRectMake(rect.origin.x + 1, rect.origin.y + 2, rect.size.width - 2, rect.size.height - 4)
            withForeground:[NCColor whiteColor]
            withBackground:[NCColor blackColor]
+           withColorRange:nil
                 breakMode:NCLineBreakByWordWrapping
              truncateMode:NCLineTruncationByTruncationTail
             alignmentMode:NCLineAlignmentLeft];
@@ -140,6 +146,7 @@
                        inRect:CGRectMake(1+totalWidth, rect.origin.y + rect.size.height - 1, w, 1)
                withForeground:self.currentIndex == i ? [NCColor blackColor] : [NCColor whiteColor]
                withBackground:self.currentIndex == i ? [NCColor whiteColor] : [NCColor blackColor]
+               withColorRange:nil
                     breakMode:NCLineBreakByNoWrapping
                  truncateMode:NCLineTruncationByClipping
                 alignmentMode:NCLineAlignmentLeft];

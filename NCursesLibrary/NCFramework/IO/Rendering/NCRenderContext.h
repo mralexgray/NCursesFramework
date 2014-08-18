@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "NCColor.h"
+#import "NCColorRange.h"
 
 typedef enum : NSUInteger {
     NCLineBreakByNoWrapping,
@@ -35,6 +36,7 @@ typedef enum : NSUInteger {
            inRect:(CGRect)rect
    withForeground:(NCColor*)fcolor
    withBackground:(NCColor*)bcolor
+   withColorRange:(NCColorRange*)colorRange
         breakMode:(NCLineBreakMode)linebreak
      truncateMode:(NCLineTruncationMode)truncate
     alignmentMode:(NCLineAlignment)alignment;
