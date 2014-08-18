@@ -9,7 +9,7 @@
 #import "NCApplication.h"
 #import "NCScreen.h"
 
-#import <curses.h> // Needed for getch()
+#import <curses.h>
 
 @interface NCApplication ()
 @property (nonatomic, strong) NSMutableArray *windows;
@@ -23,6 +23,21 @@ static NCApplication *instance = nil;
 {
     self = [super init];
     if(self) {
+        initscr();
+        curs_set(0);
+        start_color();
+        raw();
+        keypad(stdscr, TRUE);
+        noecho();
+        
+        // init color pairs
+        for(int f = 0; f <= 7; f++) {
+            for(int b = 0; b <= 7; b++) {
+                int colorCode = f + b * 10;
+                init_pair(colorCode, f, b);
+            }
+        }
+        
         instance = self;
         self.windows = [NSMutableArray array];
         [self applicationLaunched];
@@ -35,6 +50,8 @@ static NCApplication *instance = nil;
                 [[self.windows lastObject] draw];
             }
         }
+        
+        endwin();
     }
     return self;
 }
