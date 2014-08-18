@@ -23,6 +23,8 @@
 - (void)moveDown;
 - (void)moveBeginingOfLine;
 - (void)moveEndOfLine;
+- (void)movePageUp;
+- (void)movePageDown;
 
 - (void)backspace;
 - (void)addCharacter:(char)character;

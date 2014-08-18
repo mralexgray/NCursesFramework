@@ -101,7 +101,7 @@
                 // Cut
                 self.copiedText = [self.textEditorView markCut];
             }
-            else if([key isEqualTo:[NCKey NCKEY_V]] || [key isEqualTo:[NCKey NCKEY_v]]) {
+            else if([key isEqualTo:[NCKey NCKEY_P]] || [key isEqualTo:[NCKey NCKEY_p]]) {
                 // Paste
                 [self.textEditorView paste:self.copiedText];
             }
@@ -112,6 +112,14 @@
             else if([key isEqualTo:[NCKey NCKEY_E]] || [key isEqualTo:[NCKey NCKEY_e]]) {
                 // Jump to end of line
                 [self.textEditorView moveEndOfLine];
+            }
+            else if([key isEqualTo:[NCKey NCKEY_Y]] || [key isEqualTo:[NCKey NCKEY_y]]) {
+                // Page up
+                [self.textEditorView movePageUp];
+            }
+            else if([key isEqualTo:[NCKey NCKEY_V]] || [key isEqualTo:[NCKey NCKEY_v]]) {
+                // Page down
+                [self.textEditorView movePageDown];
             }
             else if([key isEqualTo:[NCKey NCKEY_ARROW_LEFT]]) {
                 [self.tabMenuView moveLeft];

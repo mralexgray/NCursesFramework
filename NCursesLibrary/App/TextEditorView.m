@@ -184,6 +184,24 @@
     }
 }
 
+- (void)movePageUp
+{
+    if(self.buffer) {
+        for(int i = 0; i < (int)self.frame.size.height; i++) {
+            [self moveUp];
+        }
+    }
+}
+
+- (void)movePageDown
+{
+    if(self.buffer) {
+        for(int i = 0; i < (int)self.frame.size.height; i++) {
+            [self moveDown];
+        }
+    }
+}
+
 - (void)backspace
 {
     if(!self.buffer.markMode)
