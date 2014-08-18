@@ -17,16 +17,19 @@
 
 @interface TextEditorView : NCView
 
-- (void) moveLeft;
-- (void) moveUp;
-- (void) moveRight;
-- (void) moveDown;
-- (void) backspace;
-- (void) addCharacter:(char)character;
-- (void) addNewLine;
+- (void)moveLeft;
+- (void)moveUp;
+- (void)moveRight;
+- (void)moveDown;
+- (void)moveBeginingOfLine;
+- (void)moveEndOfLine;
 
-- (void) startMarkMode;
-- (BOOL) stopMarkMode;
+- (void)backspace;
+- (void)addCharacter:(char)character;
+- (void)addNewLine;
+
+- (void)startMarkMode;
+- (BOOL)stopMarkMode;
 
 - (NSArray*)markCut;
 - (NSArray*)markCopy;

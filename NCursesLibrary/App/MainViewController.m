@@ -105,6 +105,14 @@
                 // Paste
                 [self.textEditorView paste:self.copiedText];
             }
+            else if([key isEqualTo:[NCKey NCKEY_A]] || [key isEqualTo:[NCKey NCKEY_a]]) {
+                // Jump to begining of line
+                [self.textEditorView moveBeginingOfLine];
+            }
+            else if([key isEqualTo:[NCKey NCKEY_E]] || [key isEqualTo:[NCKey NCKEY_e]]) {
+                // Jump to end of line
+                [self.textEditorView moveEndOfLine];
+            }
             else if([key isEqualTo:[NCKey NCKEY_ARROW_LEFT]]) {
                 [self.tabMenuView moveLeft];
             }

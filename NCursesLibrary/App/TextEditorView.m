@@ -162,6 +162,28 @@
     }
 }
 
+- (void)moveBeginingOfLine
+{
+    if(self.buffer) {
+        if(self.buffer.markMode) {
+            self.buffer.markCursorOffsetX = 0;
+        } else {
+            self.buffer.cursorOffsetX = 0;
+        }
+    }
+}
+
+- (void)moveEndOfLine
+{
+    if(self.buffer) {
+        if(self.buffer.markMode) {
+            self.buffer.markCursorOffsetX = (int)[[self.buffer.lines objectAtIndex:self.buffer.markCursorLineY] length];
+        } else {
+            self.buffer.cursorOffsetX = (int)[[self.buffer.lines objectAtIndex:self.buffer.cursorLineY] length];
+        }
+    }
+}
+
 - (void)backspace
 {
     if(!self.buffer.markMode)
@@ -181,7 +203,10 @@
                         [self.buffer.lines removeObject:line];
                     }
                 }
-            } else {
+            } else if(self.buffer.cursorLineY > 0) {
+                NSMutableString *lineAbove = [self textOnLine:self.buffer.cursorLineY - 1];
+                self.buffer.cursorLineX = (int)lineAbove.length;
+                [lineAbove appendString:line];
                 [self moveUp];
                 [self.buffer.lines removeObject:line];
             }
@@ -316,7 +341,9 @@
         posStart = self.buffer.markCursorLineX;
         posEnd = self.buffer.cursorLineX;
     }
-    posEnd++;
+    if(posEnd+1 < [[self.buffer.lines objectAtIndex:self.buffer.cursorLineY] length]) {
+        posEnd++;
+    }
     
     if(lineStart == lineEnd) {
         NSRange range = NSMakeRange(posStart, posEnd - posStart);
