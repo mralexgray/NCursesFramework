@@ -148,7 +148,20 @@
     }
     
     // Update modeLabel
-    [self.modeLabel setText:self.commandMode ? @"COMMAND MODE" : @"INPUT MODE"];
+    [self updateBottomLabel];
+}
+
+- (void)updateBottomLabel
+{
+    NSString *fileInfo = @"";
+    if(self.textEditorView.buffer) {
+        NSDictionary *attrs = [[NSFileManager defaultManager] attributesOfItemAtPath:self.textEditorView.buffer.path error:nil];
+        if([attrs objectForKey:NSFileSize]) {
+            NSObject *size = [attrs objectForKey:NSFileSize];
+            fileInfo = [NSString stringWithFormat:@"%@",size];
+        }
+    }
+    [self.modeLabel setText:[NSString stringWithFormat:@"%@ - %@",self.commandMode ? @"COMMAND MODE" : @"INPUT MODE", fileInfo]];
 }
 
 #pragma mark TabMenuViewOutput
@@ -160,6 +173,7 @@
     } else {
     	[self.textEditorView openBuffer:nil];
     }
+    [self updateBottomLabel];
 }
 
 #pragma mark TextEditorViewOutput

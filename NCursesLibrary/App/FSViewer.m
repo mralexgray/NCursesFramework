@@ -20,7 +20,9 @@
 
 @property (nonatomic, strong) NSArray *files;
 @property (nonatomic, strong) NSArray *folders;
-@property (nonatomic, assign) int currentIndex;
+@property (nonatomic, assign) int lineY;
+@property (nonatomic, assign) int screenY;
+@property (nonatomic, assign) int screenOffsetY;
 @end
 
 @implementation FSViewer
@@ -79,69 +81,74 @@
         
         // Draw folders
         int y = 1;
-        for (int i = 0; folders && i < folders.count; i++) {
-            Folder *folder = [folders objectAtIndex:i];
-            
-            NSString *text = [NSString stringWithFormat:@"- %@",folder.dirName];
-            
-            CGSize textSize = [context sizeOfText:text
-                                        breakMode:NCLineBreakByWordWrapping
-                                            width:rect.size.width];
-            
-            if(self.currentIndex == i) {
-                [context drawText:text
-                           inRect:CGRectMake(rect.origin.x, rect.origin.y + y, textSize.width, textSize.height)
-                   withForeground:[NCColor blackColor]
-                   withBackground:[NCColor whiteColor]
-                   withColorRange:nil
-                        breakMode:NCLineBreakByWordWrapping
-                     truncateMode:NCLineTruncationByClipping
-                    alignmentMode:NCLineAlignmentLeft];
-            } else {
-                [context drawText:text
-                           inRect:CGRectMake(rect.origin.x, rect.origin.y + y, textSize.width, textSize.height)
-                   withForeground:[NCColor whiteColor]
-                   withBackground:[NCColor blackColor]
-                   withColorRange:nil
-                        breakMode:NCLineBreakByWordWrapping
-                     truncateMode:NCLineTruncationByClipping
-                    alignmentMode:NCLineAlignmentLeft];
-            }
-            
-            y += textSize.height;
-        }
         
-        // Draw files
-        for(int i = 0; files && i < files.count; i++) {
-            File *file = [files objectAtIndex:i];
+        NSArray *filesAndFolders = [folders arrayByAddingObjectsFromArray:files];
+        
+        for (int i = self.screenOffsetY; folders && files && i < filesAndFolders.count && i < self.screenOffsetY + self.frame.size.height; i++) {
             
-            NSString *text = [NSString stringWithFormat:@"  %@",file.fileName];
-            
-            CGSize textSize = [context sizeOfText:text
-                                        breakMode:NCLineBreakByWordWrapping
-                                            width:rect.size.width];
-            
-            if(self.currentIndex == i + folders.count) {
-                [context drawText:text
-                           inRect:CGRectMake(rect.origin.x, rect.origin.y + y, textSize.width, textSize.height)
-                   withForeground:[NCColor blackColor]
-                   withBackground:[NCColor whiteColor]
-                   withColorRange:nil
-                        breakMode:NCLineBreakByWordWrapping
-                     truncateMode:NCLineTruncationByClipping
-                    alignmentMode:NCLineAlignmentLeft];
-            } else {
-                [context drawText:text
-                           inRect:CGRectMake(rect.origin.x, rect.origin.y + y, textSize.width, textSize.height)
-                   withForeground:[NCColor whiteColor]
-                   withBackground:[NCColor blackColor]
-                   withColorRange:nil
-                        breakMode:NCLineBreakByWordWrapping
-                     truncateMode:NCLineTruncationByClipping
-                    alignmentMode:NCLineAlignmentLeft];
+            NSObject *obj = [filesAndFolders objectAtIndex:i];
+            if(obj && [obj isKindOfClass:[Folder class]]) {
+                Folder *folder = (Folder*)obj;
+                
+                NSString *text = [NSString stringWithFormat:@"- %@",folder.dirName];
+                
+                CGSize textSize = [context sizeOfText:text
+                                            breakMode:NCLineBreakByWordWrapping
+                                                width:rect.size.width];
+                
+                if(self.lineY == i) {
+                    [context drawText:text
+                               inRect:CGRectMake(rect.origin.x, rect.origin.y + y, textSize.width, textSize.height)
+                       withForeground:[NCColor blackColor]
+                       withBackground:[NCColor whiteColor]
+                       withColorRange:nil
+                            breakMode:NCLineBreakByWordWrapping
+                         truncateMode:NCLineTruncationByClipping
+                        alignmentMode:NCLineAlignmentLeft];
+                } else {
+                    [context drawText:text
+                               inRect:CGRectMake(rect.origin.x, rect.origin.y + y, textSize.width, textSize.height)
+                       withForeground:[NCColor whiteColor]
+                       withBackground:[NCColor blackColor]
+                       withColorRange:nil
+                            breakMode:NCLineBreakByWordWrapping
+                         truncateMode:NCLineTruncationByClipping
+                        alignmentMode:NCLineAlignmentLeft];
+                }
+                
+                y += textSize.height;
+            } else if(obj && [obj isKindOfClass:[File class]]) {
+                File *file = (File*)obj;
+                
+                NSString *text = [NSString stringWithFormat:@"  %@",file.fileName];
+                
+                CGSize textSize = [context sizeOfText:text
+                                            breakMode:NCLineBreakByWordWrapping
+                                                width:rect.size.width];
+                
+                if(self.lineY == i) {
+                    [context drawText:text
+                               inRect:CGRectMake(rect.origin.x, rect.origin.y + y, textSize.width, textSize.height)
+                       withForeground:[NCColor blackColor]
+                       withBackground:[NCColor whiteColor]
+                       withColorRange:nil
+                            breakMode:NCLineBreakByWordWrapping
+                         truncateMode:NCLineTruncationByClipping
+                        alignmentMode:NCLineAlignmentLeft];
+                } else {
+                    [context drawText:text
+                               inRect:CGRectMake(rect.origin.x, rect.origin.y + y, textSize.width, textSize.height)
+                       withForeground:[NCColor whiteColor]
+                       withBackground:[NCColor blackColor]
+                       withColorRange:nil
+                            breakMode:NCLineBreakByWordWrapping
+                         truncateMode:NCLineTruncationByClipping
+                        alignmentMode:NCLineAlignmentLeft];
+                }
+                
+                y += textSize.height;
             }
             
-            y += textSize.height;
         }
     }
     [super drawRect:rect inContext:context];
@@ -150,7 +157,9 @@
 - (void) openPath:(NSString *)path
 {
     self.path = path;
-    self.currentIndex = 0;
+    self.lineY = 0;
+    self.screenY = 0;
+    self.screenOffsetY = 0;
     
     NSArray *contents = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:path error:nil];
     NSMutableArray *files = [NSMutableArray array];
@@ -206,8 +215,14 @@
 
 - (void) moveUp
 {
-    if(self.currentIndex > 0) {
-        self.currentIndex--;
+    if(self.screenY == 0) {
+        if(self.screenOffsetY > 0) {
+            self.screenOffsetY--;
+            self.lineY--;
+        }
+    } else {
+        self.screenY--;
+        self.lineY--;
     }
 }
 
@@ -216,8 +231,14 @@
     NSArray *folders = self.filteredFolders ? self.filteredFolders : self.folders;
     NSArray *files = self.filteredFiles ? self.filteredFiles : self.files;
     
-    if(self.currentIndex + 1 < files.count + folders.count) {
-        self.currentIndex++;
+    if(self.lineY + 1 < files.count + folders.count) {
+        if(self.screenY + 2 < self.frame.size.height) {
+            self.screenY++;
+            self.lineY++;
+        } else {
+            self.screenOffsetY++;
+            self.lineY++;
+        }
     }
 }
 
@@ -233,13 +254,13 @@
     NSArray *folders = self.filteredFolders ? self.filteredFolders : self.folders;
     NSArray *files = self.filteredFiles ? self.filteredFiles : self.files;
     
-    if(self.currentIndex >= folders.count && self.currentIndex < folders.count + files.count) {
-        File *file = [files objectAtIndex:self.currentIndex - folders.count];
+    if(self.lineY >= folders.count && self.lineY < folders.count + files.count) {
+        File *file = [files objectAtIndex:self.lineY - folders.count];
         if(self.delegate && [self.delegate respondsToSelector:@selector(didSelectFile:)]) {
             [self.delegate didSelectFile:file.path];
         }
-    } else if(self.currentIndex < folders.count) {
-        Folder *folder = [folders objectAtIndex:self.currentIndex];
+    } else if(self.lineY < folders.count) {
+        Folder *folder = [folders objectAtIndex:self.lineY];
         if(self.delegate && [self.delegate respondsToSelector:@selector(didSelectFolder:)]) {
             [self.delegate didSelectFolder:folder.path];
         }
@@ -259,7 +280,9 @@
 
 - (void) filterAddCharacter:(char)character
 {
-    self.currentIndex = 0;
+    self.lineY = 0;
+    self.screenY = 0;
+    self.screenOffsetY = 0;
     if(!self.filter) {
         self.filter = [NSString stringWithFormat:@"%c",character];
     } else {
@@ -277,7 +300,9 @@
 
 - (void) filterRemovePreviousCharacter
 {
-    self.currentIndex = 0;
+    self.lineY = 0;
+    self.screenY = 0;
+    self.screenOffsetY = 0;
     if(self.filter) {
         if(self.filter.length > 1) {
             self.filter = [self.filter substringToIndex:self.filter.length-1];
@@ -291,7 +316,9 @@
 
 - (void) filterClear
 {
-    self.currentIndex = 0;
+    self.lineY = 0;
+    self.screenY = 0;
+    self.screenOffsetY = 0;
     self.filter = nil;
     self.filteredFiles = nil;
     self.filteredFolders = nil;
