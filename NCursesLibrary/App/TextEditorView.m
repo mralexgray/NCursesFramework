@@ -206,6 +206,55 @@
     }
 }
 
+- (void)moveFind:(NSString *)toFind
+{
+    if(self.buffer && toFind && toFind.length > 0) {
+        if(!self.buffer.markMode) {
+            int foundLineY = -1;
+            int foundOffsetX = -1;
+            for(int y = self.buffer.cursorLineY; y < self.buffer.lines.count; y++) {
+                NSString *line = [self.buffer.lines objectAtIndex:y];
+                if(y == self.buffer.cursorLineY) {
+                    if(self.buffer.cursorOffsetX + 1 < line.length)
+                    {
+                        NSRange range = [[line substringFromIndex:self.buffer.cursorOffsetX+1] rangeOfString:toFind options:NSCaseInsensitiveSearch];
+                        if(range.location != NSNotFound) {
+                            foundLineY = y;
+                            foundOffsetX = self.buffer.cursorOffsetX + 1 + (int)range.location;
+                            break;
+                        }
+                    }
+                } else {
+                    NSRange range = [line rangeOfString:toFind options:NSCaseInsensitiveSearch];
+                    if(range.location != NSNotFound) {
+                        foundLineY = y;
+                        foundOffsetX = (int)range.location;
+                        break;
+                    }
+                }
+            }
+            if(foundLineY == -1 && foundOffsetX == -1) {
+                for(int y = 0; y < self.buffer.cursorLineY; y++) {
+                    NSString *line = [self.buffer.lines objectAtIndex:y];
+                    NSRange range = [line rangeOfString:toFind options:NSCaseInsensitiveSearch];
+                    if(range.location != NSNotFound) {
+                        foundLineY = y;
+                        foundOffsetX = (int)range.location;
+                        break;
+                    }
+                }
+            }
+            if(foundLineY != -1 && foundOffsetX != -1) {
+                self.buffer.cursorLineX = foundOffsetX;
+                self.buffer.cursorOffsetX = foundOffsetX;
+                self.buffer.cursorLineY = foundLineY;
+                self.buffer.cursorOffsetY = MIN(self.frame.size.height, foundLineY);
+                self.buffer.screenOffsetY = MAX(0, foundLineY - self.frame.size.height);
+            }
+        }
+    }
+}
+
 - (void)backspace
 {
     if(!self.buffer.markMode)

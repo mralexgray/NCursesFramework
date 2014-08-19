@@ -16,6 +16,8 @@
 
 @interface MainViewController ()
 @property (nonatomic, assign) BOOL commandMode;
+@property (nonatomic, assign) BOOL searchMode;
+@property (nonatomic, strong) NSString *searchString;
 @property (nonatomic, strong) NSArray *copiedText;
 
 @property (nonatomic, strong) TextEditorView *textEditorView;
@@ -40,7 +42,7 @@
     [self.view addSubview:self.textEditorView];
     
     self.modeLabel = [[NCLabel alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height - 1, self.view.frame.size.width, 1)];
-    [self.modeLabel setText:self.commandMode ? @"COMMAND MODE" : @"INPUT MODE"];
+    [self.modeLabel setText:(self.searchString ? [@"SEARCH:" stringByAppendingString:[self.searchString uppercaseString]] : (self.commandMode ? @"COMMAND MODE" : @"INPUT MODE"))];
     [self.modeLabel setForegroundColor:[NCColor blackColor]];
     [self.modeLabel setBackgroundColor:[NCColor whiteColor]];
     [self.view addSubview:self.modeLabel];
@@ -59,7 +61,29 @@
     if([key isEqualTo:[NCKey NCKEY_ESC]]) {
         self.commandMode = !self.commandMode;
     } else {
-        if(self.commandMode) {
+        if(self.searchMode) {
+            if([key isEqualTo:[NCKey NCKEY_Q]] || [key isEqualTo:[NCKey NCKEY_q]]) {
+                self.searchMode = NO;
+                self.searchString = nil;
+            } else if([key isEqualTo:[NCKey NCKEY_ENTER]]) {
+                if(self.searchString && self.searchString.length > 0) {
+                    [self.textEditorView moveFind:self.searchString];
+                }
+            } else if([key isEqualTo:[NCKey NCKEY_BACK_SPACE]]) {
+                if(self.searchString && self.searchString.length > 1) {
+                    self.searchString = [self.searchString substringToIndex:self.searchString.length-1];
+                } else {
+                    self.searchString = nil;
+                }
+            } else {
+                if(!self.searchString) {
+                    self.searchString = [NSString stringWithFormat:@"%c",[key getCharacter]];
+                } else {
+                    self.searchString = [self.searchString stringByAppendingFormat:@"%c",[key getCharacter]];
+                }
+            }
+        }
+        else if(self.commandMode) {
             if([key isEqualTo:[NCKey NCKEY_r]] || [key isEqualTo:[NCKey NCKEY_R]]) {
                 // Read new buffer
                 FileSelectorViewController *vc = [[FileSelectorViewController alloc] initWithPath:[[NSFileManager defaultManager] currentDirectoryPath]
@@ -92,6 +116,10 @@
             else if([key isEqualTo:[NCKey NCKEY_M]] || [key isEqualTo:[NCKey NCKEY_m]]) {
                 // Mark mode
                 [self.textEditorView startMarkMode];
+            }
+            else if([key isEqualTo:[NCKey NCKEY_S]] || [key isEqualTo:[NCKey NCKEY_s]]) {
+                // Search mode
+                self.searchMode = YES;
             }
             else if([key isEqualTo:[NCKey NCKEY_C]] || [key isEqualTo:[NCKey NCKEY_c]]) {
                 // Copy
@@ -153,15 +181,7 @@
 
 - (void)updateBottomLabel
 {
-    NSString *fileInfo = @"";
-    if(self.textEditorView.buffer) {
-        NSDictionary *attrs = [[NSFileManager defaultManager] attributesOfItemAtPath:self.textEditorView.buffer.path error:nil];
-        if([attrs objectForKey:NSFileSize]) {
-            NSObject *size = [attrs objectForKey:NSFileSize];
-            fileInfo = [NSString stringWithFormat:@"%@",size];
-        }
-    }
-    [self.modeLabel setText:[NSString stringWithFormat:@"%@ - %@",self.commandMode ? @"COMMAND MODE" : @"INPUT MODE", fileInfo]];
+    [self.modeLabel setText:(self.searchMode ? [@"SEARCH:" stringByAppendingString:(self.searchString ? [self.searchString uppercaseString] : @"")] : (self.commandMode ? @"COMMAND MODE" : @"INPUT MODE"))];
 }
 
 #pragma mark TabMenuViewOutput

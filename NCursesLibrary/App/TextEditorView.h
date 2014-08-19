@@ -25,6 +25,7 @@
 - (void)moveEndOfLine;
 - (void)movePageUp;
 - (void)movePageDown;
+- (void)moveFind:(NSString*)toFind;
 
 - (void)backspace;
 - (void)addCharacter:(char)character;
