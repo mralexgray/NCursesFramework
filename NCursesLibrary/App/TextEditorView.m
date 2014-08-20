@@ -465,7 +465,7 @@
                 
                 int expectedLines = 0;
                 int totalLines = 0;
-                for(int i = self.buffer.markMode ? self.buffer.markScreenOffsetY : self.buffer.screenOffsetY; i < self.buffer.lines.count; i++) {
+                for(int i = self.buffer.markMode ? self.buffer.markScreenOffsetY : self.buffer.screenOffsetY; i < self.buffer.lines.count && i <= (self.buffer.markMode ? self.buffer.markCursorLineY : self.buffer.cursorLineY); i++) {
                     NSString *line = [self.buffer.lines objectAtIndex:i];
                     CGSize size = [context sizeOfText:line
                                             breakMode:NCLineBreakByWordWrapping
