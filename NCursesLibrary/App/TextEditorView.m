@@ -269,6 +269,7 @@
                     if(self.buffer.cursorLineY > 0) {
                         NSMutableString *lineAbove = [self textOnLine:self.buffer.cursorLineY - 1];
                         self.buffer.cursorLineX = (int)lineAbove.length;
+                        self.buffer.cursorOffsetX = (int)lineAbove.length;
                         [lineAbove appendString:line];
                         [self moveUp];
                         [self.buffer.lines removeObject:line];
